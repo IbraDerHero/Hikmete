@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mbrojtje &amp; Fqinjësi — Pakicat fetare nën sundimin islam</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --ink:#1B2430;
+  --ink-2:#212B39;
+  --ink-3:#283544;
+  --parchment:#E9DFC4;
+  --parchment-2:#DED2AE;
+  --parchment-text:#2B2114;
+  --gold:#BD9A3C;
+  --gold-dim:#8C7330;
+  --vermillion:#9C4740;
+  --lapis:#3E6479;
+  --line: rgba(233,223,196,0.14);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'Source Serif 4', serif;
+  line-height:1.6;
+}
+h1,h2,h3,.display{
+  font-family:'Spectral', serif;
+  font-weight:600;
+  letter-spacing:0.01em;
+  color:var(--parchment);
+}
+.mono{
+  font-family:'IBM Plex Mono', monospace;
+  letter-spacing:0.03em;
+}
+a{color:var(--gold);}
+
+/* ---------- decorative geometric motif (non-figurative, girih-inspired) ---------- */
+.motif-divider{
+  height:34px;
+  width:100%;
+  background-image: repeating-linear-gradient(45deg, var(--line) 0 1px, transparent 1px 22px),
+                     repeating-linear-gradient(-45deg, var(--line) 0 1px, transparent 1px 22px);
+  opacity:0.7;
+}
+
+/* ---------- top nav ---------- */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(27,36,48,0.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:0 18px;
+}
+.topnav .rail{
+  display:inline-flex; gap:2px; padding:12px 0;
+}
+.topnav a{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  text-decoration:none;
+  color:var(--parchment-2);
+  padding:8px 14px;
+  border-radius:2px;
+  border:1px solid transparent;
+  white-space:nowrap;
+}
+.topnav a:hover{ border-color:var(--gold); color:var(--gold); }
+
+.langswitch{
+  display:inline-flex; align-items:center; gap:2px;
+  margin-right:12px; padding-right:12px;
+  border-right:1px solid var(--line);
+  font-family:'IBM Plex Mono', monospace; font-size:12px;
+}
+.langswitch a, .langswitch span{ padding:6px 8px; }
+.langswitch a{ color:var(--parchment-2); text-decoration:none; }
+.langswitch a:hover{ color:var(--gold); }
+.langswitch .active{ color:var(--gold); font-weight:600; }
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  padding:100px 24px 70px;
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero .eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  margin-bottom:22px;
+  display:block;
+}
+.hero h1{
+  font-size:clamp(34px,5.4vw,58px);
+  line-height:1.12;
+  margin:0 0 26px;
+}
+.hero h1 em{
+  font-style:italic; color:var(--gold); font-weight:500;
+}
+.hero p{
+  font-size:18px;
+  color:var(--parchment-2);
+  max-width:620px;
+  margin:0 auto;
+}
+.hero .seal{
+  margin:38px auto 0;
+  width:64px; height:64px;
+  border:1.5px solid var(--gold);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--gold); letter-spacing:0.05em;
+  position:relative;
+}
+.hero .seal::before{
+  content:'';
+  position:absolute; inset:6px;
+  border:1px solid var(--gold-dim);
+  border-radius:50%;
+}
+
+/* ---------- methodology strip ---------- */
+.method{
+  max-width:920px; margin:0 auto; padding:10px 24px 60px;
+}
+.method .legend{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+  margin-top:18px;
+}
+.legend .chip{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px; padding:7px 12px; border-radius:2px;
+  border:1px solid var(--line); color:var(--parchment-2);
+  display:flex; align-items:center; gap:8px;
+}
+.chip .dot{width:8px;height:8px;border-radius:50%;}
+.dot.a{background:var(--lapis);}
+.dot.b{background:var(--vermillion);}
+.dot.c{background:var(--gold);}
+.method p.note{
+  text-align:center; color:var(--parchment-2); font-size:14.5px; max-width:640px; margin:22px auto 0;
+}
+
+/* ---------- faktencheck ---------- */
+.faktencheck{ max-width:920px; margin:0 auto; padding:10px 24px 70px; }
+.claim{
+  margin-bottom:36px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+}
+.claim-quote{
+  background:var(--ink-3);
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+}
+.claim-quote .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--vermillion); display:block; margin-bottom:10px;
+}
+.claim-quote p{
+  font-style:italic;
+  color:var(--parchment-2);
+  font-size:16px;
+  margin:0;
+  max-width:68ch;
+}
+.claim-answer{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  padding:22px 24px;
+}
+.claim-answer .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--gold-dim); display:block; margin-bottom:10px;
+}
+.claim-answer p{ font-size:15px; margin:0 0 10px; }
+.claim-answer p:last-child{ margin-bottom:0; }
+.claim-answer .src{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:#5c5033;
+}
+
+/* ---------- era sections ---------- */
+.era{
+  padding:70px 24px 30px;
+  border-top:1px solid var(--line);
+}
+.era-inner{ max-width:920px; margin:0 auto; }
+.era-head{ display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; margin-bottom:8px;}
+.era-num{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:14px;}
+.era-dates{ font-family:'IBM Plex Mono', monospace; color:var(--parchment-2); font-size:13px; }
+.era h2{ font-size:clamp(24px,3.4vw,34px); margin:2px 0 18px;}
+.era > .era-inner > p.lede{
+  color:var(--parchment-2); font-size:17px; max-width:70ch; margin-bottom:34px;
+}
+
+/* document/evidence cards */
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:10px;}
+.card{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  border-radius:2px;
+  padding:20px 22px;
+  position:relative;
+  border-left:4px solid var(--lapis);
+  box-shadow:0 10px 26px rgba(0,0,0,0.28);
+}
+.card.b{ border-left-color:var(--vermillion); }
+.card.c{ border-left-color:var(--gold); }
+.card .tag{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em;
+  color:var(--gold-dim); display:block; margin-bottom:8px;
+}
+.card.b .tag{ color:var(--vermillion); }
+.card.a .tag{ color:var(--lapis); }
+.card h3{ font-size:17px; color:var(--parchment-text); margin:0 0 8px; font-weight:600;}
+.card p{ font-size:14.5px; margin:0; }
+.card .src{
+  display:block; margin-top:10px; font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:#5c5033;
+}
+
+/* marginal gloss — the signature element */
+.gloss{
+  margin:26px 0 6px;
+  padding:14px 18px 14px 16px;
+  border-left:2px dashed var(--gold-dim);
+  font-family:'Spectral', serif;
+  font-style:italic;
+  font-size:14.5px;
+  color:var(--parchment-2);
+  max-width:66ch;
+}
+.gloss::before{
+  content:'Shënim anësor — kritikë burimesh';
+  display:block;
+  font-family:'IBM Plex Mono', monospace;
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.people{
+  margin-top:22px; font-size:14.5px; color:var(--parchment-2);
+}
+.people b{ color:var(--parchment); }
+
+/* cross themes */
+.themes-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:22px; margin-top:24px;
+}
+.theme{ padding:18px 0; border-top:1px solid var(--line); }
+.theme .n{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:12px; display:block; margin-bottom:8px;}
+.theme h3{ font-size:17px; margin:0 0 8px;}
+.theme p{ font-size:14px; color:var(--parchment-2); margin:0;}
+
+/* bib */
+.bib ul{ columns:2; column-gap:40px; padding-left:18px; font-size:14px; color:var(--parchment-2);}
+.bib li{ margin-bottom:10px; break-inside:avoid;}
+
+footer{
+  padding:50px 24px 70px; text-align:center;
+  color:var(--parchment-2); font-size:13px;
+}
+footer .mono{ display:block; margin-top:6px; opacity:0.7;}
+
+@media (max-width:640px){
+  .bib ul{ columns:1; }
+  .hero{ padding:70px 20px 50px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="rail">
+    <div class="langswitch"><a href="index.html">DE</a><span class="active">SQ</span></div>
+    <a href="#metodika">Metodika</a>
+    <a href="#faktet">Tri pohime</a>
+    <a href="#profeti">622–632 · Profeti</a>
+    <a href="#rashidun">632–661 · Rashidunët</a>
+    <a href="#umajjadet">661–750 · Umajjadët</a>
+    <a href="#abasidet">750–1258 · Abasidët</a>
+    <a href="#andaluzi">711–1492 · Al-Andaluzi</a>
+    <a href="#osmanet">1299–1922 · Osmanët</a>
+    <a href="#temat">Tema tërthore</a>
+    <a href="#burimet">Burime</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">Një vepër referuese e bazuar në burime</span>
+  <h1>Mbrojtje &amp; Fqinjësi — <em>si jetuan pakicat fetare</em> nën Profetin dhe kalifët</h1>
+  <p>Nga Kushtetuta e Medinës (622), që u siguroi lirinë fetare njësoj hebrenjve dhe muslimanëve, deri te pritja e hebrenjve të dëbuar nga Spanja prej Sulltan Bajazitit II (1492): bashkëjetesa ishte norma në traditën juridike sunite për mbi 1300 vjet.</p>
+  <div class="seal">1400+<br>Vjet</div>
+</header>
+
+<div class="motif-divider"></div>
+
+<section class="method" id="metodika">
+  <h2 style="text-align:center;">Si i trajton kjo faqe burimet</h2>
+  <p style="text-align:center;color:var(--parchment-2);max-width:640px;margin:14px auto 0;">Çdo dëshmi bën pjesë në një nga tri kategoritë — kjo tregon sa e sigurt është historikisht një pohim.</p>
+  <div class="legend">
+    <div class="chip"><span class="dot a"></span> A — dokument bashkëkohor/i hershëm</div>
+    <div class="chip"><span class="dot b"></span> B — hadith sunit</div>
+    <div class="chip"><span class="dot c"></span> C — tekst juridik i mëvonshëm / artefakt</div>
+  </div>
+  <p class="note">Aty ku kërkimi shkencor dyshon në datimin apo autorësinë e një burimi, kjo shënohet në një „shënim anësor" pranë dëshmisë — jo e fshehur në fusnotë.</p>
+</section>
+
+<div class="motif-divider"></div>
+
+<!-- ============ FAKTENCHECK ============ -->
+<section class="faktencheck" id="faktet">
+  <h2 style="text-align:center;">Tri pohime të përhapura — çfarë tregojnë burimet</h2>
+  <p style="text-align:center;color:var(--parchment-2);max-width:640px;margin:14px auto 40px;">Tri pohime që qarkullojnë shpesh rreth Islamit — të verifikuara me të njëjtat burime mbi të cilat mbështetet edhe kronologjia më poshtë.</p>
+
+  <div class="claim">
+    <div class="claim-quote">
+      <span class="label">Pohimi 1</span>
+      <p>„Muslimanët duan fshehurazi t'i zhdukin fetë e tjera — janë paqësorë vetëm kur janë në pakicë."</p>
+    </div>
+    <div class="claim-answer">
+      <span class="label">Gjendja e dëshmive</span>
+      <p>Që nga Kushtetuta e Medinës (622), muslimanët ishin pothuajse gjithmonë forca politiko-ushtarake <b>dominuese</b>, jo pakica — nën umajjadët, abasidët, mamlukët dhe osmanët, pikërisht në kulmin e pushtetit të tyre. Pikërisht atëherë mbeti në fuqi mbrojtja juridike për hebrenjtë e të krishterët: shekuj ndërtimi kishash, një familje mjekësh të krishterë në oborrin kalifal për breza, vezirë hebrenj në Granada, Geniza e Kajros si dëshmi e jetës së zakonshme.</p>
+      <p>Prova më e qartë: <b>Sulltan Bajaziti II</b> pret në 1492 hebrenjtë sefardikë të dëbuar nga Spanja — në kulmin e pushtetit osman, jo në një fazë dobësimi. Nëse teza do të ishte e vërtetë, përndjekja duhej të fillonte pikërisht atje ku muslimanët janë më të fuqishëm. Gjendja tregon të kundërtën.</p>
+      <span class="src">Kategoria A/C · detaje te epokat më poshtë</span>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-quote">
+      <span class="label">Pohimi 2</span>
+      <p>„Kurani u lejon muslimanëve të mashtrojnë të tjerët për të goditur në momentin e duhur."</p>
+    </div>
+    <div class="claim-answer">
+      <span class="label">Gjendja e dëshmive</span>
+      <p>Termi shpesh i cituar „takijja" është si doktrinë e sistemuar kryesisht një koncept <b>shiit</b>, i lindur nga përvoja e përndjekjes së një pakice fetare — i zbatuar te doktrina sunite, vetë termi është i papërshtatshëm.</p>
+      <p>Ç'thonë në të vërtetë burimet sunite: Kurani 16:106 lejon mohimin verbal të besimit vetëm në rrezik jete akut (rasti: tortura ndaj shokut Amar ibn Jasir) — përjashtim i ngushtë emergjence, jo strategji e përhershme ndaj fqinjëve. Hadithi „Lufta është dinakëri" (Sahih al-Bukhari) i referohet taktikës në konflikt të armatosur aktiv — parim i pranishëm në etikën e luftës të çdo qytetërimi, jo në marrëdhëniet paqësore.</p>
+      <p>Nuk ekziston bazë juridike sunite e pranuar gjerësisht për mashtrim të përhershëm ndaj personave nën mbrojtje. Bashkëpunimi shumëshekullor me zyrtarë, mjekë e dijetarë jomuslimanë (shih epokat më poshtë) do të ishte i pashpjegueshëm me një strategji të tillë.</p>
+      <span class="src">Kurani 16:106; Sahih al-Bukhari (hadithi i dinakërisë së luftës)</span>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-quote">
+      <span class="label">Pohimi 3 (thelbi teologjik)</span>
+      <p>„Islami i mëson ndjekësit e vet antisemitizëm."</p>
+    </div>
+    <div class="claim-answer">
+      <span class="label">Gjendja e dëshmive</span>
+      <p>Për mbi një mijëvjeçar, hebrenjtë nën sundimin sunit mbajtën poste të larta besimi: Samueli dhe Jusufi ibn Nagrela si vezirë në Granada (deri 1066), mjekë oborri në disa dinasti, zyrtarë në kohën mamluke. Majmonidesi, dijetari hebre më i rëndësishëm i mesjetës, nuk iku nga sundimi sunit, por <b>nga almohadët</b> — një lëvizje që edhe dijetarë sunitë e kohës e kritikuan si të devijuar teologjikisht dhe që u kthye njëkohësisht kundër shumicës maliki-sunite. Geniza e Kajros dokumenton jetën hebraike pa ndërprerje nën mamlukët. Kulmi: Bajaziti II, 1492.</p>
+      <p style="margin-top:14px;color:#5c5033;font-size:13.5px;"><b>Kufizim i qëllimshëm:</b> Pohime mbi imigracionin e sotëm, statistikat e kriminalitetit, trajtimin e grave apo gjendjen ekonomike të vendeve myslimane nuk trajtohen këtu — janë çështje bashkëkohore e komplekse më vete, që nuk mund t'u përgjigjesh seriozisht me burime mesjetare.</p>
+      <span class="src">Kategoria A · detaje te epokat më poshtë</span>
+    </div>
+  </div>
+</section>
+
+<div class="motif-divider"></div>
+
+<!-- ============ ERA 1 ============ -->
+<section class="era" id="profeti">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">01</span>
+      <span class="era-dates mono">622–632 e.s. · 1–11 h.</span>
+    </div>
+    <h2>Profeti Muhamed në Medinë</h2>
+    <p class="lede">Pas hixhretit në 622, Medina ishte një qytet me përbërje fetare të përzier: umeti mysliman krah fiseve hebraike dhe grupeve të tjera. Tekstet më të hershme rregullatore të Islamit lindin pikërisht në këtë kontekst.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Kategoria A · Traktat</span>
+        <h3>Kushtetuta e Medinës</h3>
+        <p>Rregullon mbrojtjen e përbashkët dhe drejtësinë mes muslimanëve dhe fiseve hebraike: hebrenjve feja e tyre, muslimanëve feja e tyre. Konsiderohet një nga dokumentet më të siguruara të periudhës më të hershme islame.</p>
+        <span class="src">Ibn Is'hak / Ibn Hisham, Sira</span>
+      </div>
+      <div class="card a">
+        <span class="tag">Kategoria A · Traktat</span>
+        <h3>Marrëveshja me të krishterët e Naxhranit (631)</h3>
+        <p>Garanci mbrojtjeje kundrejt xhizjes; siguroi lirinë fetare, kishat dhe gjyqësinë e vet për delegacionin e krishterë nga Jemeni.</p>
+        <span class="src">Ibn Sa'd; el-Beladhuri, Futuh al-Buldan</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · e diskutueshme</span>
+        <h3>Ashtinameja për Shën Katerinën</h3>
+        <p>Letër mbrojtjeje e datuar tradicionalisht 626, drejtuar manastirit të Sinait. Ruhet ende atje si relike, e dëshmuar edhe me kopje.</p>
+        <span class="src">Kopje: Manastiri i Shën Katerinës, Sinai</span>
+      </div>
+    </div>
+
+    <div class="gloss">Kopjet më të vjetra të Ashtinamesë datojnë shumë më vonë se 626; ekzistenca e saj në kohën e Profetit është e diskutueshme mes historianëve, ndërsa brenda traditës klerikale dhe islame konsiderohet autentike prej shekujsh. Të dyja qëndrimet i takojnë një trajtimi të ndershëm.</div>
+
+    <div class="cards">
+      <div class="card c">
+        <span class="tag">Rast konflikti · 624</span>
+        <h3>Beni Kajnuka</h3>
+        <p>Pas një incidenti tregu të përshkallëzuar dhe vrasjeve të ndërsjella, burimet e vlerësojnë këtë si shkelje të Kushtetutës së Medinës. Rrethim, pastaj dëbim në Siri (jo vrasje).</p>
+        <span class="src">Ibn Is'hak; krah. F. Donner, F. E. Peters</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Rast konflikti · 625</span>
+        <h3>Beni Nadir</h3>
+        <p>Akuzë për komplot atentati kundër Muhamedit. Rrethim, më pas dëbim në Hajber.</p>
+        <span class="src">Ibn Is'hak; Sahih Muslimi</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Rast konflikti · 627</span>
+        <h3>Beni Kurejza</h3>
+        <p>Akuzë për bashkëpunim të fshehtë me koalicionin sulmues gjatë rrethimit të Medinës (Beteja e Hendekut). Pas kapitullimit: ekzekutimi i burrave sipas vendimit të një arbitri të zgjedhur nga vetë Beni Kurejza, skllavërimi i grave e fëmijëve.</p>
+        <span class="src">Ibn Is'hak; Sahih al-Bukhari</span>
+      </div>
+    </div>
+
+    <div class="gloss">Arsyetimi tradicional për të tria rastet është shkelja e marrëveshjes, jo përkatësia fetare si e tillë. Njëkohësisht, historianë perëndimorë (mes tyre Fred Donner, F. E. Peters) vërejnë se burimet nuk i saktësojnë gjithmonë rrethanat, dhe kërkimi diskuton ende shifrat e ekzekutimeve te Beni Kurejza (mes tyre W. N. Arafat). Të dyja i takojnë një paraqitjeje të ndershme.</div>
+
+    <div class="people">
+      <span class="tag" style="color:var(--vermillion);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;">Kategoria B · Hadith</span><br>
+      <b>Sahih al-Bukhari 3166:</b> „Kush vret një muahid — person nën marrëveshje mbrojtjeje — nuk do ta ndiejë aromën e xhenetit."
+    </div>
+  </div>
+</section>
+
+<!-- ============ ERA 2 ============ -->
+<section class="era" id="rashidun">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">02</span>
+      <span class="era-dates mono">632–661 e.s.</span>
+    </div>
+    <h2>Kalifët e drejtudhëzuar (Rashidunët)</h2>
+    <p class="lede">Me zgjerimin drejt Sirisë, Palestinës, Egjiptit, Irakut e Persisë, miliona të krishterë, hebrenj e zoroastrianë u bënë nënshtetas të kalifatit — praktika e dhimmasë lind në këtë kohë si realitet administrativ i jetuar.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Kategoria A · garanci personale</span>
+        <h3>Garancia e Umerit për Jerusalemin (637)</h3>
+        <p>Garanci e shkurtër, personale ndaj Patriarkut Sofronios gjatë dorëzimit paqësor të Jerusalemit — jeta, prona dhe kishat mbeten të paprekura.</p>
+        <span class="src">Et-Taberi (sipas Sejf ibn Umerit)</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · e kompiluar më vonë</span>
+        <h3>„Pakti i Umerit" (kod juridik)</h3>
+        <p>Katalog i detajuar rregullash për dhimmitë, i atribuuar më vonë Umerit I: rregulla veshjeje, ndalime ndërtimi, norma sjelljeje.</p>
+        <span class="src">citimet më të hershme, shek. 9–10</span>
+      </div>
+    </div>
+
+    <div class="gloss">E rëndësishme të dallohet: garancia e shkurtër e Umerit ndaj Jerusalemit (më sipër, Kategoria A) nuk është i njëjti dokument me „Paktin e Umerit" të mëvonshëm dhe shumë më të gjatë. Kërkimi modern (mes tyre Milka Levy-Rubin, Bernard Lewis) e daton këtë të fundit në shek. 8–9, si tekst juristësh të mëvonshëm, i atribuuar Umerit për autoritet shtesë — jo dokument autentik i vitit 637.</div>
+
+    <div class="people">
+      <span style="color:var(--vermillion);font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;">Kategoria B · Hadith</span><br>
+      <b>Sahih al-Bukhari, Testamenti i Umerit:</b> në shtratin e vdekjes, Umeri e këshillon pasardhësin të trajtojë mirë dhimmitë „e Allahut dhe të Dërguarit të Tij", të respektojë marrëveshjet dhe të mos i ngarkojë përtej fuqive.
+    </div>
+  </div>
+</section>
+
+<!-- ============ ERA 3 ============ -->
+<section class="era" id="umajjadet">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">03</span>
+      <span class="era-dates mono">661–750 e.s. · Damasku</span>
+    </div>
+    <h2>Umajjadët</h2>
+    <p class="lede">Kryeqyteti zhvendoset në Damask, mes një popullsie kryesisht të krishterë. Në këtë kohë, tekstet juridike dhe praktika e jetuar dallohen qartë.</p>
+
+    <div class="cards">
+      <div class="card c">
+        <span class="tag">Kategoria C · Artefakt</span>
+        <h3>Ndërtimet e kishave, shek. 7–8</h3>
+        <p>Vazhdimi dhe ndërtimi i ri i kishave në Jordani e Palestinë, i dëshmuar arkeologjikisht — pavarësisht ndalimeve juridike në tekstet e dhimmasë.</p>
+        <span class="src">Gjetje gërmimesh, Jordani/Palestinë</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · Artefakt</span>
+        <h3>Papirusit e Afroditos (Egjipt, fillimi i shek. 8)</h3>
+        <p>Korrespondencë administrative mes guvernatorëve arabë dhe krerëve fshatarë koptë — administrim i përditshëm nga dora e parë.</p>
+        <span class="src">Koleksione papirusesh, mes tyre British Library</span>
+      </div>
+    </div>
+
+    <div class="people">
+      <b>Gjoni i Damaskut</b> (rreth 675–749) shërbeu si zyrtar i lartë financiar në oborrin umajjad para se të tërhiqej në manastir — shembull i njohur i jomuslimanëve në poste të larta.<br><br>
+      Kalifi <b>Umer II</b> (717–720) shoqërohet shpesh me rregulla më të rrepta të dhimmasë; disa studiues mendojnë se pjesë të „Paktit të Umerit" i takojnë atij, jo Umerit I.
+    </div>
+  </div>
+</section>
+
+<!-- ============ ERA 4 ============ -->
+<section class="era" id="abasidet">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">04</span>
+      <span class="era-dates mono">750–1258 e.s. · Bagdad</span>
+    </div>
+    <h2>Abasidët</h2>
+    <p class="lede">Bagdadi bëhet qendër intelektuale — vend ku dijetarë të krishterë, hebrenj e sabianë e mbajnë të gjallë „Shtëpinë e Diturisë".</p>
+
+    <div class="cards">
+      <div class="card c">
+        <span class="tag">Kategoria C · Korpus artefaktesh</span>
+        <h3>Geniza e Kajros</h3>
+        <p>Dhjetëra mijëra dokumente nga sinagoga Ben Ezra e Kajros — kontrata, letra, akte gjyqësore. Burim qendror për jetën hebraike nën fatimidët, ejubidët e mamlukët (shek. 10–13).</p>
+        <span class="src">Bazuar te S. D. Goitein, „A Mediterranean Society"</span>
+      </div>
+      <div class="card a">
+        <span class="tag">Kategoria A · Institucion</span>
+        <h3>Bejt el-Hikma (Shtëpia e Diturisë)</h3>
+        <p>Lëvizje përkthimi ku mori pjesë qendrore edhe dijetari i krishterë Hunejn ibn Is'hak.</p>
+        <span class="src">Kronikat e periudhës së hershme abaside</span>
+      </div>
+    </div>
+
+    <div class="people">
+      Familja e mjekëve të krishterë <b>Bukhtishu</b> dha mjekë personalë të kalifëve për breza me radhë — shembull i pranisë së qëndrueshme jomuslimane në poste besimi.
+    </div>
+  </div>
+</section>
+
+<!-- ============ ERA 5 ============ -->
+<section class="era" id="andaluzi">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">05</span>
+      <span class="era-dates mono">711–1492 e.s. · Gadishulli Iberik</span>
+    </div>
+    <h2>Al-Andaluzi</h2>
+    <p class="lede">E ashtuquajtura „convivencia" përshkruan faza reale shkëmbimi kulturor — por nuk ishte idil i vazhdueshëm dhe ndryshoi shumë sipas dinastisë.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Kategoria A · Biografi</span>
+        <h3>Majmonidesi (1138–1204)</h3>
+        <p>Dijetari hebre më i rëndësishëm i mesjetës, lindur në Kordobë, i toleruar fillimisht nën umajjadët, më vonë iku nga politika e ashpër e almohadëve drejt Egjiptit.</p>
+        <span class="src">Veprat e Majmonidesit; kronika bashkëkohore</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · Artefakt</span>
+        <h3>Shkolla e përkthimit e Toledos</h3>
+        <p>Dijetarë arabë, hebrenj e latinë përkthenin së bashku vepra shkencore — të dëshmuara nga tradita e dorëshkrimeve të ruajtura.</p>
+        <span class="src">Fondet e dorëshkrimeve, Toledo/Escorial</span>
+      </div>
+    </div>
+
+    <div class="gloss">Biografia e Majmonidesit tregon të dyja anët: lulëzim kulturor nën umajjadët e hershëm të Kordobës dhe këputje nën almohadët nga shek. 12. Një faqe që tregon vetëm lulëzimin do ta anashkalonte episodin almohad.</div>
+  </div>
+</section>
+
+<!-- ============ ERA 6 ============ -->
+<section class="era" id="osmanet">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">06</span>
+      <span class="era-dates mono">1299–1922 e.s. · veçanërisht pas 1453</span>
+    </div>
+    <h2>Perandoria Osmane</h2>
+    <p class="lede">Me sistemin e miletit lind një vetëqeverisje fetare e ankoruar juridikisht për komunitetet ortodokse, armene e hebraike.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Kategoria A · Sistem juridik</span>
+        <h3>Sistemi i miletit</h3>
+        <p>Çdo komunitet fetar i njohur administron të drejtën civile dhe të gjendjes civile përmes krerëve të vet fetarë, nën sovranitetin osman.</p>
+        <span class="src">Kanunname dhe akte administrative osmane</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · ngjarje e dokumentuar</span>
+        <h3>Pritja e hebrenjve sefardikë (1492)</h3>
+        <p>Pas dëbimit nga Spanja, Sulltan Bajaziti II i pret hebrenjtë sefardikë në Perandorinë Osmane.</p>
+        <span class="src">Kronika osmane dhe hebraike</span>
+      </div>
+      <div class="card c">
+        <span class="tag">Kategoria C · Artefakt</span>
+        <h3>Ahdnameja për Shën Katerinën (1517)</h3>
+        <p>Sulltan Selimi I, pas pushtimit të Egjiptit, ripohon me akt zyrtar të drejtat mbrojtëse të manastirit të Sinait.</p>
+        <span class="src">Arkivi i Manastirit të Shën Katerinës</span>
+      </div>
+    </div>
+
+    <div class="gloss">Edhe këtu duhet diferencim: sistemi i miletit garantonte autonomi, por ishte njëkohësisht pjesë e një sistemi hierarkik me detyrim xhizjeje dhe raste të veçanta si devshirmeja (grumbullimi i djemve) — praktika dhe zbatimi rajonal ndryshuan ndjeshëm gjatë gjashtë shekujve.</div>
+  </div>
+</section>
+
+<div class="motif-divider"></div>
+
+<!-- ============ CROSS THEMES ============ -->
+<section class="era" id="temat" style="border-top:none;">
+  <div class="era-inner">
+    <h2 style="text-align:center;">Tema tërthore</h2>
+    <div class="themes-grid">
+      <div class="theme">
+        <span class="n">01</span>
+        <h3>Statusi i dhimmasë</h3>
+        <p>Mbrojtja, praktika fetare dhe gjyqësia civile e vet qëndrojnë përballë kufizimeve si xhizja, rregullat e veshjes dhe ndalimi i armëve — të dyja i takojnë një paraqitjeje të plotë.</p>
+      </div>
+      <div class="theme">
+        <span class="n">02</span>
+        <h3>Xhizja</h3>
+        <p>Kuptohet si taksë mbrojtjeje dhe përjashtimi (mes tjerash nga shërbimi ushtarak), por edhe si mjet hierarkizimi shoqëror — të dyja leximet janë të dëshmuara në kërkim.</p>
+      </div>
+      <div class="theme">
+        <span class="n">03</span>
+        <h3>Konvertimi</h3>
+        <p>Gjendja e kërkimit (mes tjerash Richard Bulliet) tregon procese konvertimi të ngadalta e të ndryshme sipas rajonit, jo konvertim të detyruar e të menjëhershëm.</p>
+      </div>
+      <div class="theme">
+        <span class="n">04</span>
+        <h3>Shumëllojshmëria rajonale</h3>
+        <p>1300 vjet dhe tre kontinente nuk lejojnë asnjë „rregull" të vetme — praktika ndryshoi ndjeshëm nga Andaluzia deri në Persi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BIBLIOGRAPHY ============ -->
+<section class="era bib" id="burimet">
+  <div class="era-inner">
+    <h2 style="text-align:center;">Burime &amp; literaturë shtesë</h2>
+    <ul>
+      <li>Milka Levy-Rubin: <i>Non-Muslims in the Early Islamic Empire: From Surrender to Coexistence</i>, Cambridge University Press, 2011.</li>
+      <li>S. D. Goitein: <i>A Mediterranean Society</i> (5 vëll., studime mbi Genizën).</li>
+      <li>Bernard Lewis: <i>The Jews of Islam</i>, Princeton University Press.</li>
+      <li>Mark R. Cohen: <i>Under Crescent and Cross: The Jews in the Middle Ages</i>.</li>
+      <li>Richard Bulliet: <i>Conversion to Islam in the Medieval Period</i>.</li>
+      <li>R. B. Serjeant: artikuj mbi „Constitution of Medina".</li>
+      <li>Anver M. Emon: <i>Religious Pluralism and Islamic Law: Dhimmis and Others in the Empire of Law</i>.</li>
+      <li>Sahih al-Bukhari, Sunan Ebu Davud — secili i cituar me numrin e hadithit.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Version pune · botimi i parë · do të zgjerohet me nënfaqe, materiale pamore dhe citate të plota
+  <span class="mono">Kategoritë A/B/C sipas besueshmërisë së burimit — shih metodikën më sipër</span>
+</footer>
+
+</body>
+</html>

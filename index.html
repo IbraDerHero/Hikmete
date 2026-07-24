@@ -76,6 +76,17 @@ a{color:var(--gold);}
 }
 .topnav a:hover{ border-color:var(--gold); color:var(--gold); }
 
+.langswitch{
+  display:inline-flex; align-items:center; gap:2px;
+  margin-right:12px; padding-right:12px;
+  border-right:1px solid var(--line);
+  font-family:'IBM Plex Mono', monospace; font-size:12px;
+}
+.langswitch a, .langswitch span{ padding:6px 8px; }
+.langswitch a{ color:var(--parchment-2); text-decoration:none; }
+.langswitch a:hover{ color:var(--gold); }
+.langswitch .active{ color:var(--gold); font-weight:600; }
+
 /* ---------- hero ---------- */
 .hero{
   position:relative;
@@ -286,6 +297,7 @@ footer .mono{ display:block; margin-top:6px; opacity:0.7;}
 
 <nav class="topnav">
   <div class="rail">
+    <div class="langswitch"><span class="active">DE</span><a href="index-sq.html">SQ</a></div>
     <a href="#methodik">Methodik</a>
     <a href="#faktencheck">Drei Behauptungen im Faktencheck</a>
     <a href="#prophet">622–632 · Der Prophet</a>
