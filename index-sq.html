@@ -323,7 +323,7 @@ footer .mono{ display:block; margin-top:6px; opacity:0.7;}
     <a href="#andaluzi">711–1492 · Al-Andaluzi</a>
     <a href="#osmanet">1299–1922 · Osmanët</a>
     <a href="#temat">Tema tërthore</a>
-    <a href="#burimet">Burime</a>
+    <a href="#burimet">Burime & Kontakt </a>
   </div>
 </nav>
 
@@ -704,8 +704,77 @@ footer .mono{ display:block; margin-top:6px; opacity:0.7;}
   </div>
 </section>
 
+<style>
+.feedback{ max-width:920px; margin:0 auto; padding:60px 24px 20px; border-top:1px solid var(--line); }
+.feedback h2{ font-size:clamp(20px,2.6vw,26px); margin:0 0 10px; }
+.feedback .intro{ color:var(--parchment-2); font-size:15px; max-width:62ch; margin:0 0 26px; }
+.feedback .box{ background:var(--parchment); border-radius:3px; padding:22px 24px; box-shadow:0 10px 26px rgba(0,0,0,0.28); }
+.feedback label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--gold-dim); margin-bottom:6px; }
+.feedback select, .feedback textarea{
+  width:100%; font-family:'Source Serif 4',serif; font-size:15px; color:var(--parchment-text);
+  background:#fff; border:1px solid rgba(43,33,20,0.25); border-radius:2px; padding:9px 11px; margin-bottom:6px; }
+.feedback textarea{ min-height:110px; resize:vertical; }
+.feedback select:focus, .feedback textarea:focus{ outline:2px solid var(--gold); outline-offset:-1px; }
+.feedback select{ margin-bottom:16px; }
+.feedback .counter{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; text-align:right; margin:0 0 16px; }
+.feedback button{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase;
+  background:var(--ink-3); color:var(--parchment); border:none; border-radius:2px; padding:11px 22px; cursor:pointer; }
+.feedback button:hover{ background:var(--ink); }
+.feedback .note-small{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; margin:12px 0 0; }
+.feedback .note-small a{ color:var(--gold-dim); }
+</style>
+
+<section class="feedback" id="feedback">
+  <h2>Kontakt</h2>
+  <p class="intro">Kjo faqe mbështetet te saktësia. Nëse gjeni një gabim, ju mungon një burim ose keni një sugjerim, na e lini këtu.</p>
+
+  <div class="box">
+    <label for="fb-lloji">Lloji i mesazhit</label>
+    <select id="fb-lloji">
+      <option>Gabim i gjetur</option>
+      <option>Burim / dëshmi për t'u shtuar</option>
+      <option>Sugjerim përmirësimi</option>
+      <option>Tjetër</option>
+    </select>
+
+    <label for="fb-mesazhi">Mesazh i shkurtër</label>
+    <textarea id="fb-mesazhi" maxlength="500" placeholder="Sa më konkret — për burime, ju lutemi shtoni referencën."></textarea>
+    <p class="counter"><span id="fb-numri">0</span> / 500</p>
+
+    <button type="button" id="fb-dergo">Shkruaj e-mail</button>
+    <p class="note-small">Hap programin tuaj të e-mailit me tekstin e plotësuar paraprakisht. Nëse nuk funksionon:
+      <a href="mailto:nachbar.aptitude308@passinbox.com?subject=Mesazh%20p%C3%ABr%20faqen">shkruani drejtpërdrejt</a>.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var MAIL = 'nachbar.aptitude308@passinbox.com';
+  var MAX  = 500;
+  var lloji   = document.getElementById('fb-lloji');
+  var mesazhi = document.getElementById('fb-mesazhi');
+  var numri   = document.getElementById('fb-numri');
+  var btn     = document.getElementById('fb-dergo');
+
+  mesazhi.addEventListener('input', function(){
+    if (mesazhi.value.length > MAX) { mesazhi.value = mesazhi.value.slice(0, MAX); }
+    numri.textContent = mesazhi.value.length;
+  });
+
+  btn.addEventListener('click', function(){
+    var teksti = mesazhi.value.trim();
+    if (!teksti) { mesazhi.focus(); return; }
+    var subjekti = 'Mesazh për faqen — ' + lloji.value;
+    window.location.href = 'mailto:' + MAIL
+      + '?subject=' + encodeURIComponent(subjekti)
+      + '&body='    + encodeURIComponent(teksti);
+  });
+})();
+</script>
+
 <footer>
-  Version pune · botimi i parë · do të zgjerohet me nënfaqe, materiale pamore dhe citate të plota
+  Version pune · botimi 1.2 · Faqja është aktualisht në ndërtim.
   <span class="mono">Kategoritë A/B/C sipas besueshmërisë së burimit — shih metodikën më sipër</span>
 </footer>
 
