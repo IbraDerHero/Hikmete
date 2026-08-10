@@ -1,0 +1,538 @@
+/* ============================================================
+   theme.css — Redesign "redaktionell-ruhig"
+   Überschreibt das Basis-Design in index.html / index-sq.html.
+   Einbindung im <head>, NACH dem bestehenden </style>:
+     <link rel="stylesheet" href="theme.css">
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+:root{
+  /* Aptos/Candara nativ, falls installiert — sonst Source Sans 3 */
+  --font-ui: Aptos, Candara, 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sidenav-w: 258px;
+}
+
+/* ---------- Grundtypografie: größer, ruhiger ---------- */
+body{
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, .display{
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+}
+.mono, .era-num, .era-dates, .card .tag, .card .src,
+.claim-quote .label, .claim-answer .label, .theme .n{
+  font-family: var(--font-mono);
+}
+
+/* ---------- Hero: Kopfzeile statt Bühne ---------- */
+.hero{
+  padding: 68px 24px 44px;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: left;
+}
+.hero .eyebrow{
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  margin-bottom: 16px;
+}
+.hero h1{
+  font-size: clamp(26px, 3.2vw, 38px);
+  line-height: 1.22;
+  margin: 0 0 18px;
+  max-width: 22ch;
+}
+.hero h1 em{ font-style: normal; }
+.hero p{
+  font-size: 17.5px;
+  line-height: 1.6;
+  max-width: 64ch;
+  margin: 0;
+}
+
+/* Siegel → kleines, in beiden Sprachen gleiches Statusabzeichen */
+.hero .seal{
+  margin: 26px 0 0;
+  width: auto; height: auto;
+  border-radius: 2px;
+  border: 1px solid var(--gold-dim);
+  display: inline-block;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.hero .seal::before{ display: none; }
+.hero .seal br{ display: none; }
+
+/* ---------- Linke Chronik-Seitenleiste ---------- */
+.topnav{ display: none !important; }
+
+.sidenav{
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidenav-w);
+  background: var(--ink-2);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 60;
+  padding: 22px 0 40px;
+}
+.sidenav::-webkit-scrollbar{ width: 8px; }
+.sidenav::-webkit-scrollbar-thumb{ background: rgba(233,223,196,0.16); border-radius: 4px; }
+
+.sidenav-lang{
+  display: flex; gap: 4px; align-items: center;
+  padding: 0 20px 16px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.sidenav-lang a, .sidenav-lang span{
+  padding: 4px 9px; border-radius: 2px; text-decoration: none;
+}
+.sidenav-lang a{ color: var(--parchment-2); border: 1px solid transparent; }
+.sidenav-lang a:hover{ color: var(--gold); border-color: var(--gold-dim); }
+.sidenav-lang .active{ color: var(--ink); background: var(--gold); font-weight: 600; }
+
+.sidenav-group{ padding: 16px 0 6px; }
+.sidenav-label{
+  display: block;
+  padding: 0 20px 10px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.sidenav a.nav-item{
+  display: block;
+  padding: 8px 20px 8px 20px;
+  color: var(--parchment-2);
+  text-decoration: none;
+  font-size: 14.5px;
+  line-height: 1.35;
+  border-left: 2px solid transparent;
+}
+.sidenav a.nav-item:hover{ color: var(--gold); background: rgba(233,223,196,0.045); }
+.sidenav a.nav-item.active{
+  color: var(--gold);
+  border-left-color: var(--gold);
+  background: rgba(189,154,60,0.09);
+}
+
+/* Chronologie-Strang mit Punkten */
+.sidenav-group.chrono{ position: relative; }
+.sidenav-group.chrono::before{
+  content:'';
+  position: absolute;
+  left: 27px; top: 34px; bottom: 14px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold-dim), rgba(140,115,48,0.25));
+}
+.sidenav-group.chrono a.nav-item{
+  position: relative;
+  padding-left: 44px;
+  border-left: none;
+}
+.sidenav-group.chrono a.nav-item::before{
+  content:'';
+  position: absolute;
+  left: 23px; top: 15px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--ink-2);
+  border: 1.5px solid var(--gold-dim);
+  transition: background-color .18s ease, border-color .18s ease;
+}
+.sidenav-group.chrono a.nav-item:hover::before{ border-color: var(--gold); }
+.sidenav-group.chrono a.nav-item.active::before{
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.sidenav .yr{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--gold-dim);
+  margin-bottom: 1px;
+}
+.sidenav a.nav-item.active .yr{ color: var(--gold); }
+
+/* Inhalt rückt nach rechts */
+@media (min-width: 1024px){
+  body{ padding-left: var(--sidenav-w); }
+}
+
+/* ---------- Mobil: Seitenleiste ausfahrbar ---------- */
+.nav-toggle{
+  display: none;
+  position: fixed; top: 12px; left: 12px; z-index: 70;
+  width: 42px; height: 42px;
+  align-items: center; justify-content: center;
+  background: var(--ink-2); color: var(--gold);
+  border: 1px solid var(--line); border-radius: 3px;
+  font-size: 18px; cursor: pointer;
+}
+.nav-backdrop{
+  display: none;
+  position: fixed; inset: 0; z-index: 55;
+  background: rgba(15,20,27,0.6);
+}
+@media (max-width: 1023px){
+  .nav-toggle{ display: flex; }
+  .sidenav{
+    transform: translateX(-100%);
+    transition: transform .26s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  }
+  body.nav-open .sidenav{ transform: translateX(0); }
+  body.nav-open .nav-backdrop{ display: block; }
+  .hero{ padding-top: 76px; }
+}
+
+/* ---------- Inhaltsblöcke: größere, ruhigere Schrift ---------- */
+.method p.note,
+.method > p{ font-size: 16px !important; line-height: 1.6; }
+.legend .chip{ font-size: 12.5px; }
+
+.faktencheck > p{ font-size: 16.5px !important; }
+.claim-quote p{ font-size: 17px; font-style: normal; }
+.claim-answer p{ font-size: 16px; }
+.claim-answer .scholars p{ font-size: 15px; }
+.claim-quote .label, .claim-answer .label{ font-size: 10.5px; }
+
+.era{ padding: 62px 24px 26px; }
+.era h2{ font-size: clamp(22px, 2.6vw, 29px); margin: 4px 0 16px; }
+.era-dates{ font-size: 12.5px; }
+.era > .era-inner > p.lede{ font-size: 17.5px; line-height: 1.6; max-width: 68ch; }
+
+.card{ padding: 18px 20px; }
+.card h3{ font-size: 17.5px; line-height: 1.3; margin: 0 0 9px; }
+.card p{ font-size: 16px; line-height: 1.6; }
+.card .tag{ font-size: 10.5px; }
+.card .src{ font-size: 12px; line-height: 1.5; }
+
+.gloss{
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 70ch;
+  border-left-width: 3px;
+}
+.theme h3{ font-size: 17.5px; }
+.theme p{ font-size: 15.5px; line-height: 1.6; }
+.bib ul{ font-size: 15px; line-height: 1.55; }
+.feedback .intro{ font-size: 16px; }
+.feedback select, .feedback textarea{ font-family: var(--font-ui); font-size: 16px; }
+footer{ font-size: 13.5px; }
+
+/* ---------- Klapp-Schalter aus app.js an neue Typo anpassen ---------- */
+.tg-btn{ font-size: 11px; }
+.tg-bulk{ font-size: 10.5px; }
+
+/* ---------- Druck ---------- */
+@media print{
+  .sidenav, .nav-toggle, .nav-backdrop{ display: none !important; }
+  body{ padding-left: 0 !important; background: #fff; color: #111; }
+}
+
+/* ---------- Redaktioneller Satz: zentrierte Inline-Styles aufheben ---------- */
+.method h2[style*="center"],
+.faktencheck h2[style*="center"],
+.era-inner h2[style*="center"],
+.bib h2[style*="center"]{ text-align: left !important; }
+
+.method > p[style],
+.faktencheck > p[style]{
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 68ch !important;
+}
+.method .legend{ justify-content: flex-start; }
+.method{ padding-bottom: 48px; }
+
+/* ============================================================
+   Farbschema: Wikipedia-Dunkelmodus (Codex Night)
+   Zum Zurücksetzen einfach diesen Block löschen.
+   ============================================================ */
+:root{
+  --ink:            #101418;   /* Seitenhintergrund   (gray800) */
+  --ink-2:          #16191d;   /* Seitenleiste                  */
+  --ink-3:          #202122;   /* Zitatblöcke                   */
+  --parchment:      #f8f9fa;   /* helle Textfarbe     (gray100) */
+  --surface:        #27292d;   /* Karten / Flächen    (gray700) */
+  --parchment-2:    #c8ccd1;   /* gedämpfter Text               */
+  --parchment-text: #f8f9fa;   /* Text auf Karten     (gray100) */
+
+  --gold:     #88a3e8;         /* Akzent & Links (progressive)  */
+  --gold-dim: #6a7ba8;         /* gedämpfter Akzent             */
+  --lapis:    #6bc2a0;         /* Kategorie A                   */
+  --vermillion:#fd7865;        /* Kategorie B (destructive)     */
+
+  --line: rgba(248,249,250,0.13);
+  --wiki-subtle: #a2a9b1;      /* Codex color-subtle            */
+  --wiki-amber:  #ffcc33;      /* Kategorie C                   */
+}
+
+/* Kategorie C eigenständig halten (sonst identisch mit Linkfarbe) */
+.card.c{ border-left-color: var(--wiki-amber); }
+.card.c .tag{ color: var(--wiki-amber); }
+.card.c .tg-btn{ color: var(--wiki-amber) !important; }
+.dot.c{ background: var(--wiki-amber); }
+
+/* Fest kodierte Brauntöne des hellen Entwurfs ersetzen */
+.card .src,
+.claim-answer .src,
+.feedback .counter,
+.feedback .note-small,
+[style*="5c5033"]{ color: var(--wiki-subtle) !important; }
+
+.claim-answer .scholars{ border-top-color: var(--rule-soft); }
+
+/* Formularfelder */
+.feedback select,
+.feedback textarea{
+  background: var(--field-bg);
+  color: var(--parchment-text);
+  border-color: var(--field-border);
+}
+.feedback select::placeholder,
+.feedback textarea::placeholder{ color: var(--field-placeholder); }
+.feedback .note-small a{ color: var(--gold); }
+
+/* Flächen auf Dunkel: flacher Schatten, feine Kante */
+.card{
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  border-left-width: 4px;
+}
+.feedback .box{
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+}
+.card .tg-btn:hover .tg-ico{ background: rgba(248,249,250,0.12); }
+
+/* Aktiver Navigationseintrag: blaue Fläche statt goldener */
+.sidenav a.nav-item.active{ background: var(--accent-soft); }
+.sidenav-lang .active{ color: var(--on-accent); background: var(--gold); }
+
+/* ---------- Überschriften in Weiß ---------- */
+h1, h2, h3, .display,
+.hero h1,
+.era h2,
+.card h3,
+.theme h3,
+.feedback h2{ color: var(--heading); }
+
+/* Hervorhebung im Titel ebenfalls weiß */
+.hero h1 em{ color: var(--heading); }
+
+/* ---------- Flächen vs. Textfarbe sauber trennen ---------- */
+.card,
+.claim-answer,
+.feedback .box{ background: var(--surface); }
+
+.card,
+.claim-answer{ color: var(--parchment-text); }
+
+/* Namen und Hervorhebungen im Fließtext schlicht weiß */
+.people b,
+.people strong,
+.era-inner b,
+.gloss b,
+.claim-answer b,
+.card b{ color: var(--heading); font-weight: 600; }
+
+/* ---------- Legende: Kategorien untereinander ---------- */
+.method .legend{
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+}
+.method .legend .chip{ width: 100%; max-width: 460px; }
+
+/* Kategorie-A-Kante wiederherstellen (border-Kurzform hatte sie überschrieben) */
+.card.a{ border-left-color: var(--lapis); }
+.card.b{ border-left-color: var(--vermillion); }
+
+/* ============================================================
+   Trennlinien: Rosette statt Kreuzschraffur
+   Drei Varianten — aktiv ist Variante 1.
+   Zum Wechseln: gewünschten Block einkommentieren, anderen auskommentieren.
+   ============================================================ */
+
+/* ---- Variante 1: feine Linie mit zentrierter Sechsblatt-Rosette ---- */
+.motif-divider{
+  height: 58px;
+  opacity: 1;
+  position: relative;
+  background-image: linear-gradient(to right,
+      transparent,
+      var(--rule-soft) 18%,
+      var(--rule-soft) 82%,
+      transparent);
+  background-size: 100% 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Aussparung, damit die Linie nicht durch das Ornament läuft */
+.motif-divider::before{
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 74px; height: 58px;
+  background: var(--ink);
+}
+/* Die Rosette selbst — Farbe folgt dem Theme */
+.motif-divider::after{
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  background-color: var(--gold-dim);
+  -webkit-mask: var(--motif-rosette) center / contain no-repeat;
+          mask: var(--motif-rosette) center / contain no-repeat;
+}
+
+:root{
+  --motif-rosette: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.7'%3E%3Ccircle cx='30' cy='30' r='11'/%3E%3Ccircle cx='30' cy='19' r='11'/%3E%3Ccircle cx='30' cy='41' r='11'/%3E%3Ccircle cx='20.5' cy='24.5' r='11'/%3E%3Ccircle cx='39.5' cy='24.5' r='11'/%3E%3Ccircle cx='20.5' cy='35.5' r='11'/%3E%3Ccircle cx='39.5' cy='35.5' r='11'/%3E%3C/g%3E%3C/svg%3E");
+
+  --motif-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.4'%3E%3Crect x='9' y='9' width='22' height='22'/%3E%3Crect x='9' y='9' width='22' height='22' transform='rotate(45 20 20)'/%3E%3C/g%3E%3C/svg%3E");
+
+  --motif-diamond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 2 L18 10 L10 18 L2 10 Z' fill='none' stroke='%23000' stroke-width='1.8'/%3E%3C/svg%3E");
+}
+
+/* ---- Variante 2: durchgehendes Band aus Achtecksternen (Khatam) ----
+.motif-divider{
+  height: 42px;
+  opacity: 1;
+  background-image: none;
+  background-color: var(--gold-dim);
+  -webkit-mask: var(--motif-star) center / 34px 34px repeat-x;
+          mask: var(--motif-star) center / 34px 34px repeat-x;
+}
+.motif-divider::before,
+.motif-divider::after{ content: none; }
+*/
+
+/* ---- Variante 3: schlichte Linie mit kleiner Raute ----
+.motif-divider{
+  height: 44px;
+  opacity: 1;
+  position: relative;
+  background-image: linear-gradient(to right,
+      transparent, rgba(248,249,250,0.14) 22%,
+      rgba(248,249,250,0.14) 78%, transparent);
+  background-size: 100% 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.motif-divider::before{
+  content:''; position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%); width:42px; height:44px;
+  background: var(--ink);
+}
+.motif-divider::after{
+  content:''; position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%); width:16px; height:16px;
+  background-color: var(--gold);
+  -webkit-mask: var(--motif-diamond) center / contain no-repeat;
+          mask: var(--motif-diamond) center / contain no-repeat;
+}
+*/
+
+/* ============================================================
+   Zwei Farbwelten
+   dunkel  = Wikipedia-Nachtmodus (Vorgabe)
+   hell    = Pergament, abgeleitet vom Kontaktformular
+   Umschaltung über data-theme am <html>-Element.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+  --heading:   #f8f9fa;
+  --on-accent: #101418;
+  --accent-soft: rgba(136,163,232,0.13);
+  --field-bg: #101418;
+  --field-border: #54595d;
+  --field-placeholder: #72777d;
+  --card-border: rgba(248,249,250,0.09);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  --rule-soft: rgba(248,249,250,0.16);
+  --btn-bg: #202122;
+  --btn-fg: #f8f9fa;
+}
+
+[data-theme="light"]{
+  color-scheme: light;
+
+  --ink:            #E9DFC4;   /* Seitenhintergrund */
+  --ink-2:          #E1D5B6;   /* Seitenleiste      */
+  --ink-3:          #DED2AE;   /* Zitatblöcke       */
+  --surface:        #FAF6EA;   /* Karten            */
+  --parchment:      #2B2114;   /* Grundtext         */
+  --parchment-2:    #5C5033;   /* gedämpfter Text   */
+  --parchment-text: #2B2114;   /* Text auf Karten   */
+  --heading:        #2B2114;
+
+  --gold:     #7A5E1F;         /* Akzent & Links    */
+  --gold-dim: #8C7330;
+  --lapis:      #3E6479;       /* Kategorie A       */
+  --vermillion: #9C4740;       /* Kategorie B       */
+  --wiki-amber: #8C6A16;       /* Kategorie C       */
+  --wiki-subtle:#5C5033;
+
+  --line: rgba(43,33,20,0.20);
+  --on-accent: #FAF6EA;
+  --accent-soft: rgba(122,94,31,0.13);
+  --field-bg: #FFFFFF;
+  --field-border: rgba(43,33,20,0.28);
+  --field-placeholder: #8A7C5E;
+  --card-border: rgba(43,33,20,0.12);
+  --card-shadow: 0 1px 3px rgba(43,33,20,0.18);
+  --rule-soft: rgba(43,33,20,0.22);
+  --btn-bg: #2B2114;
+  --btn-fg: #FAF6EA;
+}
+
+/* Formularelemente in beiden Welten sauber */
+.feedback button{ background: var(--btn-bg); color: var(--btn-fg); }
+.feedback button:hover{ filter: brightness(1.25); }
+.feedback select option{ background: var(--field-bg); color: var(--parchment-text); }
+
+/* Im Hellmodus ist der Alhambra-Streifen sonst zu blass */
+[data-theme="light"] .divider-image{ opacity: 0.45; }
+[data-theme="light"] .card .tg-btn:hover .tg-ico{ background: rgba(43,33,20,0.09); }
+
+/* ---------- Umschalter ---------- */
+.theme-toggle{
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--parchment-2);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 5px 9px;
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle:hover{ color: var(--gold); border-color: var(--gold-dim); }
+.theme-toggle:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+.theme-toggle .ico{ font-size: 12px; }

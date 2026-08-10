@@ -174,3 +174,206 @@
   });
 
 })();
+
+
+/* ============================================================
+   Teil 2 — Chronik-Seitenleiste
+   Baut aus der bestehenden .topnav eine linke Leiste,
+   chronologisch von oben (ältestes) nach unten (jüngstes).
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  var LANG = (document.documentElement.lang || 'de').toLowerCase();
+  var IS_SQ = LANG.indexOf('sq') === 0;
+
+  var L = IS_SQ
+    ? { base: 'Bazat', chrono: 'Kronologjia', appendix: 'Shtojca', menu: 'Menyja' }
+    : { base: 'Grundlagen', chrono: 'Chronologie', appendix: 'Anhang', menu: 'Menü' };
+
+  var rail = document.querySelector('.topnav .rail');
+  if (!rail) return;
+
+  /* ---------- Vorhandene Navigation auslesen ---------- */
+  var langBlock = rail.querySelector('.langswitch');
+  var links = Array.prototype.slice.call(rail.querySelectorAll('a[href^="#"]'));
+  if (!links.length) return;
+
+  // Ein Epochen-Link beginnt mit einer Jahreszahl, z. B. "622–632 · Der Prophet"
+  var ERA_RE = /^\s*(\d{3,4}\s*[–-]\s*\d{3,4})\s*[·|-]\s*(.+)$/;
+
+  var groups = { base: [], chrono: [], appendix: [] };
+  var seenEra = false;
+
+  links.forEach(function (a) {
+    var m = ERA_RE.exec(a.textContent);
+    if (m) {
+      seenEra = true;
+      groups.chrono.push({ href: a.getAttribute('href'), yr: m[1].trim(), title: m[2].trim() });
+    } else {
+      var entry = { href: a.getAttribute('href'), title: a.textContent.trim() };
+      (seenEra ? groups.appendix : groups.base).push(entry);
+    }
+  });
+
+  /* ---------- Seitenleiste aufbauen ---------- */
+  var nav = document.createElement('nav');
+  nav.className = 'sidenav';
+  nav.setAttribute('aria-label', L.menu);
+
+  if (langBlock) {
+    var lang = document.createElement('div');
+    lang.className = 'sidenav-lang';
+    lang.innerHTML = langBlock.innerHTML;
+    nav.appendChild(lang);
+  }
+
+  function addGroup(items, label, isChrono) {
+    if (!items.length) return;
+    var g = document.createElement('div');
+    g.className = 'sidenav-group' + (isChrono ? ' chrono' : '');
+
+    var lab = document.createElement('span');
+    lab.className = 'sidenav-label';
+    lab.textContent = label;
+    g.appendChild(lab);
+
+    items.forEach(function (it) {
+      var a = document.createElement('a');
+      a.className = 'nav-item';
+      a.href = it.href;
+      if (it.yr) {
+        var y = document.createElement('span');
+        y.className = 'yr';
+        y.textContent = it.yr;
+        a.appendChild(y);
+      }
+      var t = document.createElement('span');
+      t.className = 'ttl';
+      t.textContent = it.title;
+      a.appendChild(t);
+      g.appendChild(a);
+    });
+
+    nav.appendChild(g);
+  }
+
+  addGroup(groups.base, L.base, false);
+  addGroup(groups.chrono, L.chrono, true);
+  addGroup(groups.appendix, L.appendix, false);
+
+  document.body.insertBefore(nav, document.body.firstChild);
+
+  /* ---------- Mobile Bedienung ---------- */
+  var toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'nav-toggle';
+  toggle.setAttribute('aria-label', L.menu);
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = '\u2630';
+
+  var backdrop = document.createElement('div');
+  backdrop.className = 'nav-backdrop';
+
+  function setOpen(open) {
+    document.body.classList.toggle('nav-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.innerHTML = open ? '\u2715' : '\u2630';
+  }
+
+  toggle.addEventListener('click', function () {
+    setOpen(!document.body.classList.contains('nav-open'));
+  });
+  backdrop.addEventListener('click', function () { setOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { setOpen(false); }
+  });
+
+  document.body.insertBefore(backdrop, document.body.firstChild);
+  document.body.insertBefore(toggle, document.body.firstChild);
+
+  /* ---------- Aktiven Abschnitt beim Scrollen markieren ---------- */
+  var navItems = Array.prototype.slice.call(nav.querySelectorAll('a.nav-item'));
+  var targets = navItems.map(function (a) {
+    return { link: a, el: document.querySelector(a.getAttribute('href')) };
+  }).filter(function (t) { return t.el; });
+
+  navItems.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (window.innerWidth < 1024) { setOpen(false); }
+    });
+  });
+
+  var ticking = false;
+  function markActive() {
+    var line = window.innerHeight * 0.28;
+    var current = null;
+    targets.forEach(function (t) {
+      if (t.el.getBoundingClientRect().top <= line) { current = t; }
+    });
+    // Vor dem ersten Abschnitt: nichts markieren
+    navItems.forEach(function (a) {
+      a.classList.toggle('active', !!current && a === current.link);
+    });
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(markActive); }
+  }, { passive: true });
+  window.addEventListener('resize', markActive, { passive: true });
+  markActive();
+
+})();
+
+
+/* ============================================================
+   Teil 3 — Umschalter Hell / Dunkel
+   Der Startwert wird bereits im <head> gesetzt (kein Aufblitzen).
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  var IS_SQ = (document.documentElement.lang || 'de').toLowerCase().indexOf('sq') === 0;
+  var L = IS_SQ
+    ? { light: 'Ndriçim', dark: 'Errësirë', to: 'Ndrysho pamjen' }
+    : { light: 'Hell', dark: 'Dunkel', to: 'Ansicht wechseln' };
+
+  var root = document.documentElement;
+
+  function isLight() { return root.getAttribute('data-theme') === 'light'; }
+
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'theme-toggle';
+  btn.setAttribute('aria-label', L.to);
+
+  var ico = document.createElement('span');
+  ico.className = 'ico';
+  ico.setAttribute('aria-hidden', 'true');
+  var txt = document.createElement('span');
+  btn.appendChild(ico);
+  btn.appendChild(txt);
+
+  function paint() {
+    // Beschriftung zeigt, wohin der Klick führt
+    if (isLight()) { ico.textContent = '\u263D'; txt.textContent = L.dark; }
+    else           { ico.textContent = '\u2600'; txt.textContent = L.light; }
+    btn.setAttribute('aria-pressed', isLight() ? 'true' : 'false');
+  }
+
+  btn.addEventListener('click', function () {
+    var next = isLight() ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) { /* z. B. Privatmodus */ }
+    paint();
+  });
+
+  paint();
+
+  var host = document.querySelector('.sidenav-lang') || document.querySelector('.sidenav');
+  if (host) { host.appendChild(btn); }
+
+})();
