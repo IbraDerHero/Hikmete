@@ -559,3 +559,10 @@ h1, h2, h3, .display,
 @media (min-width: 1024px){
   body{ padding-left: var(--sidenav-w, 258px); }
 }
+
+/* Auf Mobilgeräten liegt der ☰-Knopf über der Leiste —
+   Inhalt der Leiste deshalb darunter beginnen lassen */
+@media (max-width: 1023px){
+  .sidenav{ padding-top: 66px; }
+  .sidenav-lang{ flex-wrap: wrap; row-gap: 8px; }
+}
