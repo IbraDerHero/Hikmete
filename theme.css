@@ -536,3 +536,26 @@ h1, h2, h3, .display,
 .theme-toggle:hover{ color: var(--gold); border-color: var(--gold-dim); }
 .theme-toggle:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
 .theme-toggle .ico{ font-size: 12px; }
+
+/* ============================================================
+   Nachbesserungen
+   ============================================================ */
+
+/* Beschriftungen im Kontaktformular waren zu dunkel/gedämpft */
+.feedback label{ color: var(--parchment-2); font-size: 11px; }
+.feedback .counter,
+.feedback .note-small{ color: var(--parchment-2) !important; }
+
+/* Seitenleiste im Hellmodus deutlich vom Seitenhintergrund absetzen */
+[data-theme="light"] .sidenav{
+  background: #DCCDA2;
+  border-right: 1px solid rgba(43,33,20,0.30);
+}
+[data-theme="light"] .sidenav a.nav-item{ color: #3D3320; }
+[data-theme="light"] .sidenav-group.chrono a.nav-item::before{ background: #DCCDA2; }
+
+/* Rückfallwert, falls die Variable nicht greift */
+.sidenav{ width: var(--sidenav-w, 258px); }
+@media (min-width: 1024px){
+  body{ padding-left: var(--sidenav-w, 258px); }
+}
