@@ -570,8 +570,8 @@ h1, h2, h3, .display,
 /* Hadith-Zitat mit Erläuterung */
 .hadith{
   margin: 12px 0 0;
-  padding: 0 0 0 16px;
-  border-left: 3px solid var(--vermillion);
+  padding: 0;
+  border-left: none;
   font-size: 18px;
   line-height: 1.55;
   color: var(--heading);
