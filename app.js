@@ -129,8 +129,9 @@
   /* ---------- 2. Randglossen: komplett zu, Label als Schalter ---------- */
   document.querySelectorAll('.gloss').forEach(function (gloss) {
     // Label aus dem vorhandenen ::before lesen — funktioniert DE wie SQ
-    var label = T.gloss;
+    var label = gloss.getAttribute('data-label') || T.gloss;
     try {
+      if (gloss.hasAttribute('data-label')) { throw 0; }
       var c = window.getComputedStyle(gloss, '::before').content;
       if (c && c !== 'none' && c !== 'normal') {
         label = c.replace(/^["']|["']$/g, '').trim() || label;
