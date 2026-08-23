@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al-Andaluzi dhe viti 1492</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --ink:#1B2430;
+  --ink-2:#212B39;
+  --ink-3:#283544;
+  --parchment:#E9DFC4;
+  --parchment-2:#DED2AE;
+  --parchment-text:#2B2114;
+  --gold:#BD9A3C;
+  --gold-dim:#8C7330;
+  --vermillion:#9C4740;
+  --lapis:#3E6479;
+  --sage:#5B7B62;
+  --line: rgba(233,223,196,0.14);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'Source Serif 4', serif;
+  line-height:1.6;
+}
+h1,h2,h3,.display{
+  font-family:'Spectral', serif;
+  font-weight:600;
+  letter-spacing:0.01em;
+  color:var(--parchment);
+}
+.mono{
+  font-family:'IBM Plex Mono', monospace;
+  letter-spacing:0.03em;
+}
+a{color:var(--gold);}
+
+/* ---------- decorative geometric motif (non-figurative, girih-inspired) ---------- */
+.motif-divider{
+  height:34px;
+  width:100%;
+  background-image: repeating-linear-gradient(45deg, var(--line) 0 1px, transparent 1px 22px),
+                     repeating-linear-gradient(-45deg, var(--line) 0 1px, transparent 1px 22px);
+  opacity:0.7;
+}
+
+.divider-image{
+  display:block;
+  width:920px;
+  max-width:100%;
+  height:auto;
+  margin:5px auto;
+  opacity:0.3;
+}
+
+/* ---------- top nav ---------- */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(27,36,48,0.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:0 18px;
+}
+.topnav .rail{
+  display:inline-flex; gap:2px; padding:12px 0;
+}
+.topnav a{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  text-decoration:none;
+  color:var(--parchment-2);
+  padding:8px 14px;
+  border-radius:2px;
+  border:1px solid transparent;
+  white-space:nowrap;
+}
+.topnav a:hover{ border-color:var(--gold); color:var(--gold); }
+
+.langswitch{
+  display:inline-flex; align-items:center; gap:2px;
+  margin-right:12px; padding-right:12px;
+  border-right:1px solid var(--line);
+  font-family:'IBM Plex Mono', monospace; font-size:12px;
+}
+.langswitch a, .langswitch span{ padding:6px 8px; }
+.langswitch a{ color:var(--parchment-2); text-decoration:none; }
+.langswitch a:hover{ color:var(--gold); }
+.langswitch .active{ color:var(--gold); font-weight:600; }
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  padding:100px 24px 70px;
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero .eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  margin-bottom:22px;
+  display:block;
+}
+.hero h1{
+  font-size:clamp(34px,5.4vw,58px);
+  line-height:1.12;
+  margin:0 0 26px;
+}
+.hero h1 em{
+  font-style:italic; color:var(--gold); font-weight:500;
+}
+.hero p{
+  font-size:18px;
+  color:var(--parchment-2);
+  max-width:620px;
+  margin:0 auto;
+}
+.hero .seal{
+  margin:38px auto 0;
+  width:64px; height:64px;
+  border:1.5px solid var(--gold);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--gold); letter-spacing:0.05em;
+  position:relative;
+}
+.hero .seal::before{
+  content:'';
+  position:absolute; inset:6px;
+  border:1px solid var(--gold-dim);
+  border-radius:50%;
+}
+
+/* ---------- methodology strip ---------- */
+.method{
+  max-width:920px; margin:0 auto; padding:10px 24px 60px;
+}
+.method .legend{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+  margin-top:18px;
+}
+.legend .chip{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px; padding:7px 12px; border-radius:2px;
+  border:1px solid var(--line); color:var(--parchment-2);
+  display:flex; align-items:center; gap:8px;
+}
+.chip .dot{width:8px;height:8px;border-radius:50%;}
+.dot.a{background:var(--lapis);}
+.dot.b{background:var(--vermillion);}
+.dot.c{background:var(--gold);}
+
+.claim-answer .scholars{
+  margin-top:14px; padding-top:12px; border-top:1px dashed rgba(43,33,20,0.25);
+}
+.claim-answer .scholars .label{ color:var(--vermillion); }
+.claim-answer .scholars p{ font-size:14px; }
+.method p.note{
+  text-align:center; color:var(--parchment-2); font-size:14.5px; max-width:640px; margin:22px auto 0;
+}
+
+/* ---------- faktencheck ---------- */
+.faktencheck{ max-width:920px; margin:0 auto; padding:10px 24px 70px; }
+.claim{
+  margin-bottom:36px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+}
+.claim-quote{
+  background:var(--ink-3);
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+}
+.claim-quote .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--vermillion); display:block; margin-bottom:10px;
+}
+.claim-quote p{
+  font-style:italic;
+  color:var(--parchment-2);
+  font-size:16px;
+  margin:0;
+  max-width:68ch;
+}
+.claim-answer{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  padding:22px 24px;
+}
+.claim-answer .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--gold-dim); display:block; margin-bottom:10px;
+}
+.claim-answer p{ font-size:15px; margin:0 0 10px; }
+.claim-answer p:last-child{ margin-bottom:0; }
+.claim-answer .src{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:#5c5033;
+}
+
+/* ---------- era sections ---------- */
+.era{
+  padding:70px 24px 30px;
+  border-top:1px solid var(--line);
+}
+.era-inner{ max-width:920px; margin:0 auto; }
+.era-head{ display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; margin-bottom:8px;}
+.era-num{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:14px;}
+.era-dates{ font-family:'IBM Plex Mono', monospace; color:var(--parchment-2); font-size:13px; }
+.era h2{ font-size:clamp(24px,3.4vw,34px); margin:2px 0 18px;}
+.era > .era-inner > p.lede{
+  color:var(--parchment-2); font-size:17px; max-width:70ch; margin-bottom:34px;
+}
+
+/* document/evidence cards */
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:10px;}
+.card{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  border-radius:2px;
+  padding:20px 22px;
+  position:relative;
+  border-left:4px solid var(--lapis);
+  box-shadow:0 10px 26px rgba(0,0,0,0.28);
+}
+.card.b{ border-left-color:var(--vermillion); }
+.card.c{ border-left-color:var(--gold); }
+.card .tag{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em;
+  color:var(--gold-dim); display:block; margin-bottom:8px;
+}
+.card.b .tag{ color:var(--vermillion); }
+.card.a .tag{ color:var(--lapis); }
+.card h3{ font-size:17px; color:var(--parchment-text); margin:0 0 8px; font-weight:600;}
+.card p{ font-size:14.5px; margin:0; }
+.card .src{
+  display:block; margin-top:10px; font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:#5c5033;
+}
+
+/* marginal gloss — the signature element */
+.gloss{
+  margin:26px 0 6px;
+  padding:14px 18px 14px 16px;
+  border-left:2px dashed var(--gold-dim);
+  font-family:'Spectral', serif;
+  font-style:italic;
+  font-size:14.5px;
+  color:var(--parchment-2);
+  max-width:66ch;
+}
+.gloss::before{
+  content:'Shënim anësor — kritikë burimesh';
+  display:block;
+  font-family:'IBM Plex Mono', monospace;
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.people{
+  margin-top:22px; font-size:14.5px; color:var(--parchment-2);
+}
+.people b{ color:var(--parchment); }
+
+/* cross themes */
+.themes-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:22px; margin-top:24px;
+}
+.theme{ padding:18px 0; border-top:1px solid var(--line); }
+.theme .n{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:12px; display:block; margin-bottom:8px;}
+.theme h3{ font-size:17px; margin:0 0 8px;}
+.theme p{ font-size:14px; color:var(--parchment-2); margin:0;}
+
+/* bib */
+.bib ul{ columns:2; column-gap:40px; padding-left:18px; font-size:14px; color:var(--parchment-2);}
+.bib li{ margin-bottom:10px; break-inside:avoid;}
+
+footer{
+  padding:50px 24px 70px; text-align:center;
+  color:var(--parchment-2); font-size:13px;
+}
+footer .mono{ display:block; margin-top:6px; opacity:0.7;}
+
+@media (max-width:640px){
+  .bib ul{ columns:1; }
+  .hero{ padding:70px 20px 50px; }
+}
+</style>
+<link rel="stylesheet" href="theme.css">
+<script>(function(){var t="dark";try{t=localStorage.getItem("theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");}catch(e){}document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="rail">
+    <div class="langswitch"><a href="al-andalus-1492.html">DE</a><span class="active">SQ</span></div>
+    <a href="index-sq.html">← Faqja kryesore</a>
+    <a href="#andaluzi">711–1031 · Al-Andaluzi</a>
+    <a href="#jeta">915–1204 · Kush jetonte atje</a>
+    <a href="#rekonkista">1085–1492 · Rekonkista</a>
+    <a href="#inkuizicioni">1391–1614 · Inkuizicioni</a>
+    <a href="#dekreti">1492 · Dekreti i Alhambrës</a>
+    <a href="#pritja">1492 · Pritja</a>
+    <a href="#burimet">Burime &amp; Kontakt</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">Një kronikë</span>
+  <h1>Al-Andaluzi dhe viti <em>1492</em></h1>
+  <p>Gati tetëqind vjet myslimanë, hebrenj dhe të krishterë jetuan krah për krah në Spanjë. Si mori fund kjo, dhe ku shkuan të dëbuarit.</p>
+</header>
+
+<figure class="hero-figure">
+  <div class="frame">
+    <img src="images/alhambra2.png"
+         alt="Pamje e Alhambrës në Granadë"
+         width="1600" height="610" loading="eager" decoding="async">
+  </div>
+  <figcaption>Alhambra - AI generated</figcaption>
+</figure>
+
+<div class="chronik">
+  <p class="chronik-hint">Kliko një stacion për të lexuar më tej</p>
+  <ol class="chronik-rail">
+    <li><a href="#andaluzi"><span class="yr">nga 711</span><span class="ttl">Al-Andaluzi</span></a></li>
+    <li><a href="#rekonkista"><span class="yr">nga 1085</span><span class="ttl">Rekonkista</span></a></li>
+    <li><a href="#inkuizicioni"><span class="yr">nga 1391</span><span class="ttl">Inkuizicioni</span></a></li>
+    <li><a href="#dekreti"><span class="yr">1492</span><span class="ttl">Dekreti i Alhambrës</span></a></li>
+    <li><a href="#pritja"><span class="yr">nga 1492</span><span class="ttl">Pritja</span></a></li>
+  </ol>
+</div>
+
+<div class="motif-divider"></div>
+
+<section class="era" id="andaluzi">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">I</span>
+      <span class="era-dates mono">711–1031</span>
+    </div>
+    <h2>Al-Andaluzi</h2>
+    <p class="lede">Në 711 një ushtri myslimane kaloi ngushticën e Gjibraltarit. Brenda pak vjetësh mbretëria e vestgotëve ishte histori. Atë që erdhi pas saj, banorët e quajtën al-Andaluz.</p>
+
+    <p>Al-Andaluzi nuk ishte kurrë një shtet me kufij të qartë. Ishte një varg sundimesh përgjatë gati tetëqind vjetësh, herë i bashkuar, herë i copëtuar në mbretëri të vogla. Koha më e fortë ishte mes 756 dhe 1031, kur kryeqytet ishte <b>Kordoba</b>, fillimisht e një emirati, nga 929 e një kalifati. Qyteti kishte rrugë të shtruara, fenerë rrugësh dhe ujë rrjedhës, kur Parisi ishte ende një fshat buzë lumit.</p>
+
+    <p>Por më e rëndësishme se kjo është se si ishte rregulluar bashkëjetesa. Hebrenjtë dhe të krishterët quheshin <b>dhimmi</b>, të mbrojtur. Paguanin një taksë të veçantë, xhizjen, dhe në këmbim nuk shkonin ushtarë. Çështjet e brendshme i rregullonin vetë: gjyqtarë të vetët, shkolla të vetat, bashkësi të vetat.</p>
+
+    <p>Të barabartë nuk ishin me këtë. Por kishin <b>të drejta</b>, dhe mbi të gjitha askush nuk duhej të ndërronte fenë për të jetuar e punuar i qetë. Kush do të kuptojë çfarë ndodhi nga 1391, duhet ta mbajë këtë parasysh.</p>
+
+    <div class="gloss" data-label="Jo idil">
+      <p>Statusi i dhimmiut mbeti status i klasit të dytë. Rregullat e veshjes dhe ndalimet e ndërtimit zbatoheshin herë me rreptësi, herë aspak, sipas sunduesit, dhe në 1066 në Granadë ndodhi një masakër ndaj bashkësisë hebraike. Kush flet për „tetëqind vjet harmoni", e tepron. E vërteta është: përgjatë periudhave të gjata, dhe pikërisht në dekadat më pjellore, bashkëjetesa ishte normaliteti dhe dhuna përjashtimi.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="jeta">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">II</span>
+      <span class="era-dates mono">915–1204</span>
+    </div>
+    <h2>Kush jetonte atje</h2>
+    <p class="lede">Çfarë do të thoshte kjo praktikisht, shihet më mirë te njerëz konkretë.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Kordobë · rreth 915–970</span>
+        <h3>Hasdai ibn Shaprut</h3>
+        <p>Fillimisht mjek oborri, pastaj drejtor doganash, më në fund përgjegjës për marrëdhëniet me jashtë të kalifit Abd ar-Rahman III. Bisedonte me të dërguar nga Bizanti dhe mbretëria frënge. Krahas kësaj financoi në Kordobë një shkollë talmudike. Ishte hebre dhe mbeti i tillë.</p>
+      </div>
+      <div class="card a">
+        <span class="tag">Granadë · 993–1056</span>
+        <h3>Samuel ibn Nagrela</h3>
+        <p>Vezir i Granadës, për dekada faktikisht kryeministër, dhe njëkohësisht komandant në fushatë. Netëve shkruante poezi hebraike dhe komente mbi Talmudin. Djali i tij Jusufi e mori detyrën pas tij.</p>
+      </div>
+      <div class="card a">
+        <span class="tag">Kordobë · 936–1013</span>
+        <h3>al-Zahravi</h3>
+        <p>Mjek oborri dhe autor i një vepre mjekësore në tridhjetë vëllime. Vëllimi mbi kirurgjinë, me vizatime të instrumenteve që i kishte projektuar vetë, u përkthye në latinisht dhe mbeti pesëqind vjet vepra standarde në universitetet evropiane.</p>
+      </div>
+      <div class="card c">
+        <span class="tag">Kordobë · 1126–1198</span>
+        <h3>Ibn Rushdi</h3>
+        <p>Gjykatës, mjek dhe interpretuesi më i rëndësishëm i Aristotelit në mesjetë. Në universitetet latine nuk kishte nevojë t'i thuhej emri: mjaftonte „Komentuesi", dhe të gjithë e dinin për kë bëhej fjalë.</p>
+      </div>
+      <div class="card c">
+        <span class="tag">Kordobë · 1138–1204</span>
+        <h3>Majmonidesi</h3>
+        <p>Mjek dhe dijetari hebre më i rëndësishëm i mesjetës. Vepra e tij lidhi filozofinë arabe me të drejtën hebraike. I lindur në të njëjtin qytet si Ibn Rushdi, vetëm një brez më vonë.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;">Pesë burra, tre shekuj, dy fe, dhe një gjë e përbashkët: <b>asnjëri prej tyre nuk duhej të konvertohej për të bërë punën e vet.</b> Ata nuk toleroheshin pavarësisht besimit. Besimi i tyre ishte i parashikuar në sistem.</p>
+
+    <p>Pasojat duken më qartë te përkthimet. Në <b>Toledo</b> uleshin në të njëjtën tryezë dijetarë arabë, hebrenj e latinë dhe përktheninin tekste greke, persiane e indiane, zakonisht me ndalesa, nga arabishtja në kastiliançe, prej andej në latinisht. Nëpër këtë rrugë u kthyen në Evropë Euklidi, Ptolemeu, Galeni dhe pjesa më e madhe e Aristotelit.</p>
+  </div>
+</section>
+
+<section class="era" id="rekonkista">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">III</span>
+      <span class="era-dates mono">1085–1492</span>
+    </div>
+    <h2>Rekonkista</h2>
+    <p class="lede">Jo një fushatë, por një proces ndër shekuj: mbretëritë e krishtera të veriut përparonin drejt jugut, me valë dhe me pauza të gjata ndërmjet.</p>
+
+    <p>Se kush lidhej me kë, shpesh kishte pak lidhje me fenë. Princër të krishterë luftonin kundër të krishterëve, myslimanë kundër myslimanëve, dhe aleancat përtej kufirit fetar nuk ishin gjë e rrallë.</p>
+
+    <p>Shenjat përgjatë rrugës: <b>1085</b> ra Toledoja. <b>1212</b> një ushtri myslimane humbi betejën te Las Navas de Tolosa. <b>1236</b> ra Kordoba, <b>1248</b> Sevilja. Mbeti <b>Granada</b>, dhe u mbajt edhe dy shekuj e gjysmë.</p>
+
+    <p>Prerja më e rëndë nuk erdhi megjithatë nga jashtë. Nga 1147 sunduan mbi al-Andaluz <b>almohadët</b>, një lëvizje nga Afrika e Veriut. Themeluesi i tyre, Ibn Tumerti, e kishte shpallur veten Mehdi. Ata hoqën statusin e dhimmiut. Kur Kordoba ra në duart e tyre në 1148, familja e Majmonidesit dhjetëvjeçar mblodhi gjërat dhe iku. Ibn Rushdi ra në hall te ata në 1195; librat e tij u dogjën.</p>
+
+    <div class="gloss" data-label="Almohadët">
+      <p>Ata nuk i takojnë traditës juridike për të cilën flet ky tekst, dhe për këtë nuk ka nevojë të debatohet mbi çështje besimi. Mjafton ajo që bënë: hoqën statusin e mbrojtjes dhe në trojet e pushtuara vunë para zgjedhjes, pranoni mësimin tonë, ikni ose vdisni, jo vetëm hebrenjtë e të krishterët, por edhe <b>sunitët malikitë</b>. Majmonidesi iku prej tyre, jo prej sundimit sunit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="inkuizicioni">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">IV</span>
+      <span class="era-dates mono">1391–1614</span>
+    </div>
+    <h2>Inkuizicioni</h2>
+    <p class="lede">Kjo është pjesa pa të cilën pjesa tjetër nuk kuptohet.</p>
+
+    <p>Në qershor <b>1391</b> shpërtheu në Sevilje një pogrom. E kishin nxitur predikimet e arqidhjakut Ferrán Martínez. Nga Sevilja dhuna kaloi në Kordobë, Toledo, Valencia, Barcelonë dhe në mbi shtatëdhjetë qytete të tjera. Kush mbijetoi, kishte zgjedhjen mes pagëzimit dhe vdekjes. Dhjetëra mijëra u pagëzuan; deri në 1415 u shtuan rreth pesëdhjetë mijë të tjerë. Kështu lindi një grup i ri: <b>konversot</b>.</p>
+
+    <p>Dhe këtu historia përmbyset. <b>Inkuizicioni</b>, i ngritur nga viti 1478, nuk mund të ndërmerrte asgjë kundër hebrenjve. Ai ishte kompetent vetëm për <b>të krishterët</b>. Pra kush ishte pagëzuar për të mbetur gjallë, binte pikërisht prej kësaj nën dorën e tij, si i krishterë të cilit i vihej në dyshim se fshehurazi jeton ende si hebre. Pasuan përgjimi, denoncimet nga fqinjësia, marrja në pyetje me torturë dhe në fund gjyqi publik i heretikëve.</p>
+
+    <p>Rrugëdaljen e fundit e mbyllën statutet e <i>limpieza de sangre</i>, „pastërtisë së gjakut". Ato nuk pyesnin më për besimin, por për <b>prejardhjen</b>. Dhe kundër prejardhjes nuk ndihmon asnjë pagëzim. Kush kishte të parë hebrenj, mbetej i dyshimtë, edhe djali i tij, edhe djali i djalit.</p>
+
+    <p><b>Pagëzimi pra nuk ishte rrugëdalje. Ishte hyrja në përndjekjen e radhës.</b> Pikërisht prandaj në 1492 ekzistonte ende një bashkësi hebraike që mund të dëbohej: shumëkush e kishte kuptuar prej kohësh se konvertimi nuk shpëton.</p>
+
+    <div class="gloss" data-label="Më vonë u ra myslimanëve">
+      <p>Gjatë dorëzimit të Granadës myslimanëve u ishte premtuar me marrëveshje liri fetare. Nga 1499 kjo marrëveshje u shkel: fillimisht djegie librash në Granadë, pastaj pagëzime me dhunë, 1502 në Kastilje dhe 1526 në Aragon. Më pas u ndaluan gjuha arabe, veshja, banjat. Nga 1568 deri 1571 pasuan kryengritja e Alpuharrasit dhe shtypja e saj. Mes 1609 dhe 1614 më në fund dëbimi i <b>moriskëve</b>, disa qindra mijëra njerëz. Historiani spanjoll Ruiz-Domenec e quan shkatërrim i bashkësisë islame spanjolle përmes një spastrimi etnik mizor.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="dekreti">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">V</span>
+      <span class="era-dates mono">1492</span>
+    </div>
+    <h2>Dekreti i Alhambrës</h2>
+    <p class="lede">Më 2 janar 1492 Muhamedi XII ua dorëzoi çelësat e Granadës Ferdinandit dhe Izabelës. Pas gati tetëqind vjetësh mori fund sundimi mysliman në Spanjë.</p>
+
+    <p>Jo plot tre muaj më vonë, më <b>31 mars 1492</b>, po ata të dy nënshkruan në po atë Alhambër dekretin e dëbimit. Të gjithë hebrenjtë e vendit kishin katër muaj kohë: të pagëzoheshin ose të ikin. Kush mbetej pa u pagëzuar, kërcënohej me vdekje.</p>
+
+    <p>Këta katër muaj ishin një shpronësim me orë. Shtëpi, punishte dhe biblioteka duhej të shiteshin brenda javësh, dhe çdo blerës e dinte këtë, çmimin e bënte ai. Ari dhe argjendi nuk lejoheshin të merreshin. Financieri i oborrit Isak Abravanel dhe taksambledhësi Abraham Senior u përpoqën deri në fund ta rrëzonin dekretin. Nuk ia dolën. Seniori u pagëzua dhe mbeti. Abraveneli iku.</p>
+
+    <p>Më <b>31 korrik</b> mbaroi afati, anijet e fundit u nisën ditët në vijim. 2 gushti 1492 ishte <b>Tisha beAv</b>, dita në të cilën hebrenjtë përkujtojnë shkatërrimin e Tempullit.</p>
+
+    <p>Shkuan në Portugali, ku pesë vjet më vonë i dëbuan sërish. Në Marok, Algjer e Tunis, me udhëtime detare që shumë nuk i mbijetuan. Në Itali dhe Holandë. Dhe drejt lindjes.</p>
+
+    <div class="gloss" data-label="Sa ishin?">
+      <p>Për këtë kërkimi debaton ende sot. Historianët perëndimorë japin zakonisht 40.000 deri 100.000; mesjetari i Madridit Vicente Alvarez vlerëson rreth 80.000. Në paraqitjet turke lexohet 120.000 deri 250.000, vlerësime më të vjetra shkonin deri 800.000. E padiskutueshme është vetëm se <b>të konvertuarit</b> ishin grupi më i madh, mbi 200.000, që mbetën dhe mbetën në dorë të Inkuizicionit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="pritja">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">VI</span>
+      <span class="era-dates mono">nga 1492 · Perandoria Osmane</span>
+    </div>
+    <h2>Pritja</h2>
+    <p class="lede">Asnjë shtet i krishterë i Evropës nuk i priti përgjithmonë. Perandoria Osmane e bëri.</p>
+
+    <p>Sulltan <b>Bajaziti II</b> dërgoi një ferman te valitë e provincave të tij evropiane. Aty shkruhej se hebrenjtë spanjollë nuk duhen kthyer prapa, por pritur me plot sinqeritet. Dhe kush nuk i përmbahet kësaj, kush i trajton keq ardhësit ose u shkakton qoftë edhe dëmin më të vogël, do të ndëshkohet me vdekje.</p>
+
+    <p>U vendosën në <b>Stamboll, Selanik, Edirne, Bursa, Amasja dhe Manisa</b>. Nuk erdhën në qytete të zbrazëta: që nga koha bizantine atje jetonin <b>romaniotët</b> greqishtfolës, bashkësi hebraike me histori shumë më të vjetër.</p>
+
+    <p>U pritën edhe refugjatët myslimanë nga Spanja. Në Stamboll u caktua Galata, rreth ish-kishës Shën Dominik, sot <b>Arap Camii</b>, Xhamia Arabe. Morën shtëpi, orendi dhe punë. Ndërtesa qëndron edhe sot.</p>
+
+    <p>Çfarë doli prej kësaj, lexohet te tri data. Në <b>1493</b> vëllezërit David dhe Samuel ibn Nahmias ngritën në Stamboll shtypshkronjën e parë të perandorisë. Deri në <b>1519</b> Selaniku kishte, sipas listave tatimore osmane, shumicë hebraike, më vonë qytetin e quajtën „Jerusalemi i Ballkanit". Dhe nga kastiliançja e të dëbuarve lindi <b>ladino</b>, që këto bashkësi e folën deri në shekullin 20.</p>
+
+    <p>Me këtë mbyllet rrethi. Njerëz që i kishin dëbuar nga Kordoba dhe Sevilja sepse nuk donin të konvertoheshin, jetonin njëqind vjet më vonë në Selanik e Stamboll. Dhe atje vazhduan të mos kishin nevojë.</p>
+
+    <div class="gloss" data-label="Jo akt i thjeshtë mëshire">
+      <p>Pritja kishte edhe arsye praktike. Perandoria kishte nevojë për zejtarë, tregtarë dhe mjekë, dhe i mori. Të priturit jetuan si dhimmi me detyrim xhizjeje, jo si të barabartë. Dhe e njëjta administratë njihte <i>sürgün</i>-in, shpërnguljen me detyrim, sepse pas 1453 kishte transferuar hebrenj romaniotë në Stamboll. Edhe kjo i takon pamjes.</p>
+    </div>
+
+    <div class="gloss" data-label="Citimi i famshëm">
+      <p>Fjalia se Ferdinandi e varfëron vendin e vet dhe e pasuron atë osman, i atribuohet me dëshirë Bajazitit. Por ajo qëndron në kronikën e Elija Kapsalit të vitit 1523, dhe atje thuhet se mbreti spanjoll konsiderohej <b>në oborrin e Stambollit</b> si budalla. Shoqata Historike Turke vetë thekson se atribuimi Bajazitit nuk qëndron. Fermani drejtuar valive është gjithsesi dëshmia më e mirë: ai është politikë, jo retorikë.</p>
+    </div>
+
+    <div class="gloss" data-label="A erdhi vërtet një flotë?">
+      <p>Shpesh thuhet se Bajaziti dërgoi një flotë për shpëtim. Enciklopedia turke e specialitetit është më e kujdesshme. Ndihma që kishte kërkuar Granada, nuk mundi të jepej për shkak të dobësisë së flotës osmane. Por një formacion nën Kemal Reisin sulmoi brigjet spanjolle dhe nxori në siguri një pjesë të <b>myslimanëve</b> andaluzë. Kemal Reisi u bë admiral vetëm në 1495.</p>
+      <p><b>Pra anije erdhën dhe morën njerëz, kjo është e sigurt.</b> Ajo që nuk qëndron, është pamja e një aksioni të madh shpëtimi, të planifikuar nga sulltani dhe të kryer nga flota shtetërore.</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="era bib" id="burimet">
+  <div class="era-inner">
+    <h2>Burime</h2>
+    <ul>
+      <li><b>Osmane dhe turke:</b> TDV İslâm Ansiklopedisi (<i>Bayezid II</i>, <i>Yahudilik</i>, <i>Selânik</i>, <i>Aljamia</i>); Türk Tarih Kurumu, <i>Belleten</i> 56/215 (1992) dhe 57/219 (1993); Halil İnalcık; Devlet Arşivleri Başkanlığı, <i>Cihan-Penâh</i> (2023); regjistrat tatimorë osmanë (tahrir).</li>
+      <li><b>Bashkëkohore:</b> Elija Kapsali, <i>Seder Eliyahu Zuta</i> (1523); letra e Isak Sarfatit (rreth 1454).</li>
+      <li><b>Kërkimi:</b> Heath W. Lowry në: Avigdor Levy (red.), <i>The Jews of the Ottoman Empire</i>; Braude/Lewis, <i>Christians and Jews in the Ottoman Empire</i>; Henry Kamen; Norman Roth; Joseph Pérez; Mark R. Cohen; L. P. Harvey, <i>Muslims in Spain 1500–1614</i>; Maribel Fierro.</li>
+      <li><b>Norma fetare:</b> Yaqeen Institute, <i>„Be Brothers"</i>; SeekersGuidance.</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+.feedback{ max-width:920px; margin:0 auto; padding:60px 24px 20px; border-top:1px solid var(--line); }
+.feedback h2{ font-size:clamp(20px,2.6vw,26px); margin:0 0 10px; }
+.feedback .intro{ color:var(--parchment-2); font-size:15px; max-width:62ch; margin:0 0 26px; }
+.feedback .box{ background:var(--parchment); border-radius:3px; padding:22px 24px; box-shadow:0 10px 26px rgba(0,0,0,0.28); }
+.feedback label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--gold-dim); margin-bottom:6px; }
+.feedback select, .feedback textarea{
+  width:100%; font-family:'Source Serif 4',serif; font-size:15px; color:var(--parchment-text);
+  background:var(--field-bg); border:1px solid var(--field-border); border-radius:2px; padding:9px 11px; margin-bottom:6px; }
+.feedback textarea{ min-height:110px; resize:vertical; }
+.feedback select:focus, .feedback textarea:focus{ outline:2px solid var(--gold); outline-offset:-1px; }
+.feedback select{ margin-bottom:16px; }
+.feedback .counter{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; text-align:right; margin:0 0 16px; }
+.feedback button{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase;
+  background:var(--ink-3); color:var(--parchment); border:none; border-radius:2px; padding:11px 22px; cursor:pointer; }
+.feedback button:hover{ background:var(--ink); }
+.feedback .note-small{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; margin:12px 0 0; }
+.feedback .note-small a{ color:var(--gold-dim); }
+</style>
+
+<section class="feedback" id="feedback">
+  <h2>Kontakt</h2>
+  <p class="intro">Kjo faqe mbështetet te saktësia. Nëse gjeni një gabim, ju mungon një burim ose keni një sugjerim, na e lini këtu.</p>
+
+  <div class="box">
+    <label for="fb-lloji">Lloji i mesazhit</label>
+    <select id="fb-lloji">
+      <option>Gabim i gjetur</option>
+      <option>Burim / dëshmi për t'u shtuar</option>
+      <option>Sugjerim përmirësimi</option>
+      <option>Tjetër</option>
+    </select>
+
+    <label for="fb-mesazhi">Mesazh i shkurtër</label>
+    <textarea id="fb-mesazhi" maxlength="500" placeholder="Sa më konkret — për burime, ju lutemi shtoni referencën."></textarea>
+    <p class="counter"><span id="fb-numri">0</span> / 500</p>
+
+    <button type="button" id="fb-dergo">Shkruaj e-mail</button>
+    <p class="note-small">Hap programin tuaj të e-mailit me tekstin e plotësuar paraprakisht. Nëse nuk funksionon:
+      <a href="mailto:nachbar.aptitude308@passinbox.com?subject=Mesazh%20p%C3%ABr%20faqen">shkruani drejtpërdrejt</a>.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var MAIL = 'nachbar.aptitude308@passinbox.com';
+  var MAX  = 500;
+  var lloji   = document.getElementById('fb-lloji');
+  var mesazhi = document.getElementById('fb-mesazhi');
+  var numri   = document.getElementById('fb-numri');
+  var btn     = document.getElementById('fb-dergo');
+
+  mesazhi.addEventListener('input', function(){
+    if (mesazhi.value.length > MAX) { mesazhi.value = mesazhi.value.slice(0, MAX); }
+    numri.textContent = mesazhi.value.length;
+  });
+
+  btn.addEventListener('click', function(){
+    var teksti = mesazhi.value.trim();
+    if (!teksti) { mesazhi.focus(); return; }
+    var subjekti = 'Mesazh për faqen — ' + lloji.value;
+    window.location.href = 'mailto:' + MAIL
+      + '?subject=' + encodeURIComponent(subjekti)
+      + '&body='    + encodeURIComponent(teksti);
+  });
+})();
+</script>
+
+<footer>
+  <span class="footer-script" lang="ar" dir="rtl">وَقُل رَّبِّ زِدْنِي عِلْمًا</span>
+  <br><br>Version pune · në ndërtim · <a href="index-sq.html">kthehu te faqja kryesore</a>
+  <span class="mono">nachbars-glaube.de – një vepër e shkurtër referuese</span>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

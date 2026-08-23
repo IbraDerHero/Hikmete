@@ -567,35 +567,153 @@ h1, h2, h3, .display,
   .sidenav-lang{ flex-wrap: wrap; row-gap: 8px; }
 }
 
-/* Hadith-Zitat mit Erläuterung */
-.hadith{
-  margin: 12px 0 0;
-  padding: 0;
-  border-left: none;
-  font-size: 18px;
-  line-height: 1.55;
-  color: var(--heading);
+/* ============================================================
+   Waagerechte Chronik — reines HTML/CSS, kein JavaScript
+   Links das Älteste, rechts das Jüngste.
+   ============================================================ */
+.chronik{
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 8px 24px 46px;
 }
-.hadith cite{
-  display: block;
-  margin-top: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-style: normal;
-  letter-spacing: 0.06em;
-  color: var(--parchment-2);
-}
-.hadith-note{ margin-top: 22px; max-width: 68ch; }
-.hadith-note h4{
+.chronik-hint{
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
-  margin: 18px 0 7px;
-  font-weight: 500;
+  color: var(--gold-dim);
+  margin: 0 0 20px;
 }
-.hadith-note h4:first-child{ margin-top: 0; }
-.hadith-note p{ margin: 0 0 8px; font-size: 15.5px; }
-.hadith-note ul{ margin: 0; padding-left: 20px; font-size: 15.5px; }
-.hadith-note li{ margin-bottom: 5px; }
+.chronik-rail{
+  list-style: none;
+  margin: 0;
+  padding: 0 0 6px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0;
+  position: relative;
+}
+/* durchgehende Linie */
+.chronik-rail::before{
+  content: '';
+  position: absolute;
+  left: 6%; right: 6%; top: 7px;
+  height: 1px;
+  background: linear-gradient(to right, var(--gold-dim), var(--gold), var(--gold-dim));
+  opacity: 0.55;
+}
+.chronik-rail li{ position: relative; }
+.chronik-rail a{
+  display: block;
+  padding: 22px 8px 0;
+  text-align: center;
+  text-decoration: none;
+  color: var(--parchment-2);
+  position: relative;
+}
+/* Punkt */
+.chronik-rail a::before{
+  content: '';
+  position: absolute;
+  top: 2px; left: 50%;
+  transform: translateX(-50%);
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--gold-dim);
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.chronik-rail a:hover::before,
+.chronik-rail a:focus-visible::before{
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: translateX(-50%) scale(1.25);
+}
+.chronik-rail .yr{
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.chronik-rail .ttl{
+  display: block;
+  font-size: 14.5px;
+  line-height: 1.3;
+}
+.chronik-rail a:hover .ttl,
+.chronik-rail a:focus-visible .ttl{ color: var(--gold); }
+.chronik-rail a:focus-visible{ outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 3px; }
+
+/* Schmale Bildschirme: waagerecht scrollbar statt gequetscht */
+@media (max-width: 720px){
+  .chronik{ padding-left: 0; padding-right: 0; }
+  .chronik-hint{ padding: 0 20px; }
+  .chronik-rail{
+    grid-auto-columns: 128px;
+    overflow-x: auto;
+    padding-left: 20px; padding-right: 20px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .chronik-rail li{ scroll-snap-align: center; }
+  .chronik-rail::before{ left: 20px; right: 20px; }
+}
+[data-theme="light"] .chronik-rail a::before{ background: var(--ink); }
+@media print{ .chronik{ display: none; } }
+
+/* ============================================================
+   Titelbild mit Bildunterschrift
+   ============================================================ */
+.hero-figure{
+  max-width: 920px;
+  margin: 0 auto 8px;
+  padding: 0 24px;
+}
+.hero-figure .frame{
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  background: var(--surface);
+}
+.hero-figure img{
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 21 / 8;
+  object-fit: cover;
+  object-position: center 55%;
+}
+/* Sanfter Verlauf nach unten, damit das Bild in die Seite übergeht */
+.hero-figure .frame::after{
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 38%;
+  background: linear-gradient(to bottom, transparent, rgba(16,20,24,0.55));
+  pointer-events: none;
+}
+[data-theme="light"] .hero-figure .frame::after{
+  background: linear-gradient(to bottom, transparent, rgba(43,33,20,0.30));
+}
+.hero-figure figcaption{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--parchment-2);
+  margin-top: 9px;
+}
+.hero-figure figcaption b{ color: var(--gold); font-weight: 500; }
+.hero-figure figcaption a{ color: var(--gold-dim); }
+
+@media (max-width: 720px){
+  .hero-figure{ padding: 0 20px; }
+  .hero-figure img{ aspect-ratio: 16 / 10; }
+}
+@media print{
+  .hero-figure .frame::after{ display: none; }
+}

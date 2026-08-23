@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al-Andalus und das Jahr 1492</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --ink:#1B2430;
+  --ink-2:#212B39;
+  --ink-3:#283544;
+  --parchment:#E9DFC4;
+  --parchment-2:#DED2AE;
+  --parchment-text:#2B2114;
+  --gold:#BD9A3C;
+  --gold-dim:#8C7330;
+  --vermillion:#9C4740;
+  --lapis:#3E6479;
+  --sage:#5B7B62;
+  --line: rgba(233,223,196,0.14);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'Source Serif 4', serif;
+  line-height:1.6;
+}
+h1,h2,h3,.display{
+  font-family:'Spectral', serif;
+  font-weight:600;
+  letter-spacing:0.01em;
+  color:var(--parchment);
+}
+.mono{
+  font-family:'IBM Plex Mono', monospace;
+  letter-spacing:0.03em;
+}
+a{color:var(--gold);}
+
+/* ---------- decorative geometric motif (non-figurative, girih-inspired) ---------- */
+.motif-divider{
+  height:34px;
+  width:100%;
+  background-image: repeating-linear-gradient(45deg, var(--line) 0 1px, transparent 1px 22px),
+                     repeating-linear-gradient(-45deg, var(--line) 0 1px, transparent 1px 22px);
+  opacity:0.7;
+}
+.divider-image{
+  display:block;
+  width:920px;
+  max-width:100%;
+  height:auto;
+  margin:5px auto;
+  opacity:0.3;
+}
+
+/* ---------- top nav ---------- */
+.topnav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(27,36,48,0.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;
+  white-space:nowrap;
+  padding:0 18px;
+}
+.topnav .rail{
+  display:inline-flex; gap:2px; padding:12px 0;
+}
+.topnav a{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  text-decoration:none;
+  color:var(--parchment-2);
+  padding:8px 14px;
+  border-radius:2px;
+  border:1px solid transparent;
+  white-space:nowrap;
+}
+.topnav a:hover{ border-color:var(--gold); color:var(--gold); }
+
+.langswitch{
+  display:inline-flex; align-items:center; gap:2px;
+  margin-right:12px; padding-right:12px;
+  border-right:1px solid var(--line);
+  font-family:'IBM Plex Mono', monospace; font-size:12px;
+}
+.langswitch a, .langswitch span{ padding:6px 8px; }
+.langswitch a{ color:var(--parchment-2); text-decoration:none; }
+.langswitch a:hover{ color:var(--gold); }
+.langswitch .active{ color:var(--gold); font-weight:600; }
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  padding:100px 24px 70px;
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero .eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12.5px;
+  color:var(--gold);
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  margin-bottom:22px;
+  display:block;
+}
+.hero h1{
+  font-size:clamp(34px,5.4vw,58px);
+  line-height:1.12;
+  margin:0 0 26px;
+}
+.hero h1 em{
+  font-style:italic; color:var(--gold); font-weight:500;
+}
+.hero p{
+  font-size:18px;
+  color:var(--parchment-2);
+  max-width:620px;
+  margin:0 auto;
+}
+.hero .seal{
+  margin:64px auto 0;
+  width:128px; height:128px;
+  border:1.5px solid var(--gold);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px; color:var(--gold); letter-spacing:0.05em;
+  position:relative;
+}
+.hero .seal::before{
+  content:'';
+  position:absolute; inset:6px;
+  border:1px solid var(--gold-dim);
+  border-radius:50%;
+}
+
+/* ---------- methodology strip ---------- */
+.method{
+  max-width:920px; margin:0 auto; padding:10px 24px 60px;
+}
+.method .legend{
+  display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+  margin-top:18px;
+}
+.legend .chip{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px; padding:7px 12px; border-radius:2px;
+  border:1px solid var(--line); color:var(--parchment-2);
+  display:flex; align-items:center; gap:8px;
+}
+.chip .dot{width:8px;height:8px;border-radius:50%;}
+.dot.a{background:var(--lapis);}
+.dot.b{background:var(--vermillion);}
+.dot.c{background:var(--gold);}
+
+.claim-answer .scholars{
+  margin-top:14px; padding-top:12px; border-top:1px dashed rgba(43,33,20,0.25);
+}
+.claim-answer .scholars .label{ color:var(--vermillion); }
+.claim-answer .scholars p{ font-size:14px; }
+.method p.note{
+  text-align:center; color:var(--parchment-2); font-size:14.5px; max-width:640px; margin:22px auto 0;
+}
+
+/* ---------- faktencheck ---------- */
+.faktencheck{ max-width:920px; margin:0 auto; padding:10px 24px 70px; }
+.claim{
+  margin-bottom:36px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+}
+.claim-quote{
+  background:var(--ink-3);
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+}
+.claim-quote .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--vermillion); display:block; margin-bottom:10px;
+}
+.claim-quote p{
+  font-style:italic;
+  color:var(--parchment-2);
+  font-size:16px;
+  margin:0;
+  max-width:68ch;
+}
+.claim-answer{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  padding:22px 24px;
+}
+.claim-answer .label{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.09em;
+  color:var(--gold-dim); display:block; margin-bottom:10px;
+}
+.claim-answer p{ font-size:15px; margin:0 0 10px; }
+.claim-answer p:last-child{ margin-bottom:0; }
+.claim-answer .src{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:#5c5033;
+}
+
+/* ---------- era sections ---------- */
+.era{
+  padding:70px 24px 30px;
+  border-top:1px solid var(--line);
+}
+.era-inner{ max-width:920px; margin:0 auto; }
+.era-head{ display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; margin-bottom:8px;}
+.era-num{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:14px;}
+.era-dates{ font-family:'IBM Plex Mono', monospace; color:var(--parchment-2); font-size:13px; }
+.era h2{ font-size:clamp(24px,3.4vw,34px); margin:2px 0 18px;}
+.era > .era-inner > p.lede{
+  color:var(--parchment-2); font-size:17px; max-width:70ch; margin-bottom:34px;
+}
+
+/* document/evidence cards */
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:10px;}
+.card{
+  background:var(--parchment);
+  color:var(--parchment-text);
+  border-radius:2px;
+  padding:20px 22px;
+  position:relative;
+  border-left:4px solid var(--lapis);
+  box-shadow:0 10px 26px rgba(0,0,0,0.28);
+}
+.card.b{ border-left-color:var(--vermillion); }
+.card.c{ border-left-color:var(--gold); }
+.card .tag{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em;
+  color:var(--gold-dim); display:block; margin-bottom:8px;
+}
+.card.b .tag{ color:var(--vermillion); }
+.card.a .tag{ color:var(--lapis); }
+.card h3{ font-size:17px; color:var(--parchment-text); margin:0 0 8px; font-weight:600;}
+.card p{ font-size:14.5px; margin:0; }
+.card .src{
+  display:block; margin-top:10px; font-family:'IBM Plex Mono', monospace;
+  font-size:11px; color:#5c5033;
+}
+
+/* marginal gloss — the signature element */
+.gloss{
+  margin:26px 0 6px;
+  padding:14px 18px 14px 16px;
+  border-left:2px dashed var(--gold-dim);
+  font-family:'Spectral', serif;
+  font-style:italic;
+  font-size:14.5px;
+  color:var(--parchment-2);
+  max-width:66ch;
+}
+.gloss::before{
+  content:'Randglosse — Quellenkritik';
+  display:block;
+  font-family:'IBM Plex Mono', monospace;
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.people{
+  margin-top:22px; font-size:14.5px; color:var(--parchment-2);
+}
+.people b{ color:var(--parchment); }
+
+/* cross themes */
+.themes-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:22px; margin-top:24px;
+}
+.theme{ padding:18px 0; border-top:1px solid var(--line); }
+.theme .n{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:12px; display:block; margin-bottom:8px;}
+.theme h3{ font-size:17px; margin:0 0 8px;}
+.theme p{ font-size:14px; color:var(--parchment-2); margin:0;}
+
+/* bib */
+.bib ul{ columns:2; column-gap:40px; padding-left:18px; font-size:14px; color:var(--parchment-2);}
+.bib li{ margin-bottom:10px; break-inside:avoid;}
+
+footer{
+  padding:50px 24px 70px; text-align:center;
+  color:var(--parchment-2); font-size:13px;
+}
+footer .mono{ display:block; margin-top:6px; opacity:0.7;}
+
+@media (max-width:640px){
+  .bib ul{ columns:1; }
+  .hero{ padding:70px 20px 50px; }
+}
+</style>
+<link rel="stylesheet" href="theme.css">
+<script>(function(){var t="dark";try{t=localStorage.getItem("theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");}catch(e){}document.documentElement.setAttribute("data-theme",t);})();</script>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="rail">
+    <div class="langswitch"><span class="active">DE</span><a href="al-andalus-1492-sq.html">SQ</a></div>
+    <a href="index.html">← Hauptseite</a>
+    <a href="#andalus">711–1031 · Al-Andalus</a>
+    <a href="#leben">915–1204 · Wer dort lebte</a>
+    <a href="#reconquista">1085–1492 · Reconquista</a>
+    <a href="#inquisition">1391–1614 · Inquisition</a>
+    <a href="#edikt">1492 · Alhambra-Edikt</a>
+    <a href="#aufnahme">1492 · Die Aufnahme</a>
+    <a href="#quellen">Quellen &amp; Kontakt</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <span class="eyebrow">Eine Chronik</span>
+  <h1>Al-Andalus und das Jahr <em>1492</em></h1>
+  <p>Fast achthundert Jahre lang lebten in Spanien Muslime, Juden und Christen nebeneinander. Wie das endete, und wohin die Vertriebenen gingen.</p>
+</header>
+
+<figure class="hero-figure">
+  <div class="frame">
+    <img src="images/alhambra2.png"
+         alt="Blick auf die Alhambra in Granada"
+         width="1600" height="610" loading="eager" decoding="async">
+  </div>
+  <figcaption>KI-generiert; Die Alhambra in Granada</figcaption>
+</figure>
+
+<div class="chronik">
+  <p class="chronik-hint">Zum Weiterlesen auf eine Station klicken</p>
+  <ol class="chronik-rail">
+    <li><a href="#andalus"><span class="yr">ab 711</span><span class="ttl">Al-Andalus</span></a></li>
+    <li><a href="#reconquista"><span class="yr">ab 1085</span><span class="ttl">Reconquista</span></a></li>
+    <li><a href="#inquisition"><span class="yr">ab 1391</span><span class="ttl">Inquisition</span></a></li>
+    <li><a href="#edikt"><span class="yr">1492</span><span class="ttl">Alhambra-Edikt</span></a></li>
+    <li><a href="#aufnahme"><span class="yr">ab 1492</span><span class="ttl">Die Aufnahme</span></a></li>
+  </ol>
+</div>
+
+<div class="motif-divider"></div>
+
+<section class="era" id="andalus">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">I</span>
+      <span class="era-dates mono">711–1031</span>
+    </div>
+    <h2>Al-Andalus</h2>
+    <p class="lede">711 setzte ein muslimisches Heer über die Meerenge von Gibraltar. Innerhalb weniger Jahre war das Reich der Westgoten Geschichte. Was danach kam, nannten die Bewohner al-Andalus.</p>
+
+    <p>Al-Andalus war nie ein Staat mit klaren Grenzen. Es war eine Abfolge von Herrschaften über fast achthundert Jahre, mal geeint, mal in Kleinreiche zerfallen. Die stärkste Zeit lag zwischen 756 und 1031, als <b>Córdoba</b> Hauptstadt war, erst die eines Emirats, ab 929 die eines Kalifats. Die Stadt hatte gepflasterte Straßen, Straßenlampen und fließendes Wasser, als Paris noch ein Dorf am Fluss war.</p>
+
+    <p>Wichtiger als all das ist aber, wie das Zusammenleben geregelt war. Juden und Christen galten als <b>Dhimmis</b>, als Schutzbefohlene. Sie zahlten eine eigene Steuer, die Jizya, dafür mussten sie nicht ins Heer. Ihre inneren Angelegenheiten regelten sie selbst: eigene Richter, eigene Schulen, eigene Gemeinden.</p>
+
+    <p>Gleichberechtigt waren sie damit nicht. Aber sie hatten <b>Rechte</b>, und vor allem musste niemand seinen Glauben wechseln, um in Ruhe leben und arbeiten zu können. Wer verstehen will, was ab 1391 geschah, muss das im Kopf behalten.</p>
+
+    <div class="gloss" data-label="Kein Idyll">
+      <p>Der Dhimmi-Status blieb ein Status zweiter Klasse. Kleidungsvorschriften und Bauverbote wurden je nach Herrscher mal streng, mal gar nicht durchgesetzt, und 1066 kam es in Granada zu einem Massaker an der jüdischen Gemeinde. Wer von „achthundert Jahren Harmonie" spricht, übertreibt. Richtig ist: Über weite Strecken, und gerade in den fruchtbarsten Jahrzehnten, war das Nebeneinander der Normalfall und der Zwang die Ausnahme.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="leben">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">II</span>
+      <span class="era-dates mono">915–1204</span>
+    </div>
+    <h2>Wer dort lebte</h2>
+    <p class="lede">Was das praktisch bedeutete, zeigt sich am besten an einzelnen Menschen.</p>
+
+    <div class="cards">
+      <div class="card a">
+        <span class="tag">Córdoba · um 915–970</span>
+        <h3>Hasdai ibn Schaprut</h3>
+        <p>Erst Leibarzt, dann Zolldirektor, schließlich zuständig für die Außenbeziehungen des Kalifen Abd ar-Rahman III. Er verhandelte mit Gesandten aus Byzanz und dem Frankenreich. Nebenbei finanzierte er in Córdoba eine Talmudschule. Er war Jude und blieb es.</p>
+      </div>
+      <div class="card a">
+        <span class="tag">Granada · 993–1056</span>
+        <h3>Samuel ibn Naghrilla</h3>
+        <p>Wesir von Granada, jahrzehntelang faktischer Regierungschef, dazu Heerführer im Feld. In den Nächten schrieb er hebräische Gedichte und Kommentare zum Talmud. Sein Sohn Joseph übernahm das Amt nach ihm.</p>
+      </div>
+      <div class="card a">
+        <span class="tag">Córdoba · 936–1013</span>
+        <h3>al-Zahrawi</h3>
+        <p>Hofarzt und Verfasser eines dreißigbändigen medizinischen Werks. Der Band über Chirurgie, mit Zeichnungen der Instrumente, die er selbst entworfen hatte, wurde ins Lateinische übersetzt und blieb an europäischen Universitäten fünfhundert Jahre lang das Standardwerk.</p>
+      </div>
+      <div class="card c">
+        <span class="tag">Córdoba · 1126–1198</span>
+        <h3>Ibn Rushd</h3>
+        <p>Richter, Arzt und der wichtigste Aristoteles-Ausleger des Mittelalters. In den lateinischen Universitäten musste man seinen Namen nicht nennen: Man sagte einfach „der Kommentator", und jeder wusste, wer gemeint war.</p>
+      </div>
+      <div class="card c">
+        <span class="tag">Córdoba · 1138–1204</span>
+        <h3>Maimonides</h3>
+        <p>Arzt und der bedeutendste jüdische Gelehrte des Mittelalters. Sein Werk verband arabische Philosophie mit jüdischem Recht. Geboren in derselben Stadt wie Ibn Rushd, nur eine Generation später.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;">Fünf Männer, drei Jahrhunderte, zwei Religionen, und eine Gemeinsamkeit: <b>Keiner von ihnen musste konvertieren, um seine Arbeit tun zu können.</b> Sie wurden nicht trotz ihres Glaubens geduldet. Ihr Glaube war im System vorgesehen.</p>
+
+    <p>Am deutlichsten sieht man die Folgen an den Übersetzungen. In <b>Toledo</b> saßen arabische, jüdische und lateinische Gelehrte am selben Tisch und übertrugen griechische, persische und indische Texte, meist über Umwege, vom Arabischen ins Kastilische, von dort ins Lateinische. Auf diesem Weg kamen Euklid, Ptolemäus, Galen und ein Großteil des Aristoteles nach Europa zurück.</p>
+  </div>
+</section>
+
+<section class="era" id="reconquista">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">III</span>
+      <span class="era-dates mono">1085–1492</span>
+    </div>
+    <h2>Die Reconquista</h2>
+    <p class="lede">Kein Feldzug, sondern ein Prozess über Jahrhunderte: Die christlichen Königreiche im Norden rückten nach Süden vor, in Schüben, mit langen Pausen dazwischen.</p>
+
+    <p>Wer sich dabei mit wem verbündete, hatte oft wenig mit Religion zu tun. Christliche Fürsten kämpften gegen christliche, muslimische gegen muslimische, und wechselseitige Bündnisse über die Glaubensgrenze hinweg waren nichts Besonderes.</p>
+
+    <p>Die Marken auf dem Weg: <b>1085</b> fiel Toledo. <b>1212</b> verlor ein muslimisches Heer die Schlacht bei Las Navas de Tolosa. <b>1236</b> fiel Córdoba, <b>1248</b> Sevilla. Übrig blieb <b>Granada</b>, und es hielt sich noch zweieinhalb Jahrhunderte.</p>
+
+    <p>Der härteste Einschnitt kam allerdings nicht von außen. Ab 1147 herrschten die <b>Almohaden</b> über al-Andalus, eine Bewegung aus Nordafrika. Ihr Gründer Ibn Tumart hatte sich selbst zum Mahdi erklärt. Sie schafften den Dhimmi-Status ab. Als Córdoba 1148 an sie fiel, packte die Familie des zehnjährigen Maimonides und ging. Ibn Rushd fiel 1195 bei ihnen in Ungnade; seine Bücher wurden verbrannt.</p>
+
+    <div class="gloss" data-label="Die Almohaden">
+      <p>Sie gehören nicht in die Rechtstradition, von der dieser Text handelt, und man muss dafür nicht über Glaubensfragen streiten. Es reicht, was sie taten: Sie schafften den Schutzstatus ab und stellten in den eroberten Gebieten nicht nur Juden und Christen vor die Wahl, ihre Lehre anzunehmen, das Land zu verlassen oder zu sterben, sondern auch <b>malikitische Sunniten</b>. Maimonides floh vor ihnen, nicht vor sunnitischer Herrschaft.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="inquisition">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">IV</span>
+      <span class="era-dates mono">1391–1614</span>
+    </div>
+    <h2>Die Inquisition</h2>
+    <p class="lede">Dies ist der Teil, ohne den der Rest nicht zu verstehen ist.</p>
+
+    <p>Im Juni <b>1391</b> brach in Sevilla ein Pogrom aus. Ausgelöst hatten es die Predigten des Archidiakons Ferrán Martínez. Von Sevilla sprang die Gewalt über nach Córdoba, Toledo, Valencia, Barcelona und in mehr als siebzig weitere Städte. Wer überlebte, hatte die Wahl zwischen Taufe und Tod. Zehntausende ließen sich taufen, bis 1415 kamen rund fünfzigtausend weitere hinzu. So entstand eine neue Gruppe: die <b>Conversos</b>.</p>
+
+    <p>Und hier kippt die Geschichte. Die <b>Inquisition</b>, ab 1478 eingerichtet, durfte gegen Juden gar nichts unternehmen. Sie war nur für <b>Christen</b> zuständig. Wer sich also hatte taufen lassen, um am Leben zu bleiben, geriet genau dadurch in ihre Reichweite, als Christ, dem man vorwarf, heimlich weiter jüdisch zu leben. Was folgte, waren Bespitzelung, Anzeigen aus der Nachbarschaft, Verhöre unter Folter und am Ende das öffentliche Ketzergericht.</p>
+
+    <p>Den letzten Ausweg nahmen die Statuten der <i>limpieza de sangre</i>, der „Blutreinheit". Sie fragten nicht mehr nach dem Glauben, sondern nach der <b>Herkunft</b>. Und gegen die Herkunft hilft keine Taufe. Wer jüdische Vorfahren hatte, blieb verdächtig, sein Sohn auch, und dessen Sohn ebenfalls.</p>
+
+    <p><b>Die Taufe war also kein Ausweg. Sie war der Eintritt in die nächste Verfolgung.</b> Genau deshalb gab es 1492 überhaupt noch eine jüdische Gemeinschaft, die man vertreiben konnte: Viele hatten längst begriffen, dass Konvertieren nicht rettet.</p>
+
+    <div class="gloss" data-label="Später traf es die Muslime">
+      <p>Bei der Übergabe Granadas war den Muslimen vertraglich Religionsfreiheit zugesagt worden. Ab 1499 wurde dieser Vertrag gebrochen: erst Bücherverbrennungen in Granada, dann Zwangstaufen, 1502 in Kastilien und 1526 in Aragón. Danach verbot man die arabische Sprache, die Kleidung, die Bäder. 1568 bis 1571 folgten der Aufstand in den Alpujarras und seine Niederschlagung. Zwischen 1609 und 1614 schließlich die Ausweisung der <b>Morisken</b>, mehrere Hunderttausend Menschen. Der spanische Historiker Ruiz-Domenec nennt es die Zerstörung der spanisch-islamischen Gemeinschaft durch eine grausame ethnische Säuberung.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="edikt">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">V</span>
+      <span class="era-dates mono">1492</span>
+    </div>
+    <h2>Das Alhambra-Edikt</h2>
+    <p class="lede">Am 2. Januar 1492 übergab Muhammad XII. die Schlüssel Granadas an Ferdinand und Isabella. Nach fast achthundert Jahren endete die muslimische Herrschaft in Spanien.</p>
+
+    <p>Keine drei Monate später, am <b>31. März 1492</b>, unterschrieben dieselben beiden in derselben Alhambra das Ausweisungsedikt. Alle Juden des Landes hatten vier Monate Zeit: taufen lassen oder gehen. Wer blieb, ohne getauft zu sein, dem drohte der Tod.</p>
+
+    <p>Diese vier Monate waren eine Enteignung mit Uhr. Häuser, Werkstätten und Bibliotheken mussten binnen Wochen verkauft werden, und jeder Käufer wusste das, die Preise machte er. Gold und Silber durften nicht mitgenommen werden. Der Hoffinanzier Isaac Abravanel und der Steuerpächter Abraham Senior versuchten bis zuletzt, das Edikt zu kippen. Es gelang nicht. Senior ließ sich taufen und blieb. Abravanel ging.</p>
+
+    <p>Am <b>31. Juli</b> lief die Frist ab, die letzten Schiffe legten in den Tagen darauf ab. Der 2. August 1492 war <b>Tischa beAv</b>, der Tag, an dem Juden der Zerstörung des Tempels gedenken.</p>
+
+    <p>Sie gingen nach Portugal, wo man sie fünf Jahre später erneut vertrieb. Nach Marokko, Algier und Tunis, in Überfahrten, die viele nicht überlebten. Nach Italien und in die Niederlande. Und nach Osten.</p>
+
+    <div class="gloss" data-label="Wie viele waren es?">
+      <p>Darüber streitet die Forschung bis heute. Westliche Historiker nennen meist 40.000 bis 100.000; der Madrider Mediävist Vicente Alvarez schätzt rund 80.000. In türkischen Darstellungen liest man 120.000 bis 250.000, ältere Schätzungen gingen bis 800.000. Unstrittig ist nur, dass die <b>Konvertierten</b> die größere Gruppe waren, über 200.000, die blieben und der Inquisition ausgeliefert waren.</p>
+    </div>
+  </div>
+</section>
+
+<section class="era" id="aufnahme">
+  <div class="era-inner">
+    <div class="era-head">
+      <span class="era-num">VI</span>
+      <span class="era-dates mono">ab 1492 · Osmanisches Reich</span>
+    </div>
+    <h2>Die Aufnahme</h2>
+    <p class="lede">Kein christlicher Staat Europas nahm sie auf Dauer auf. Das Osmanische Reich tat es.</p>
+
+    <p>Sultan <b>Bayezid II.</b> schickte einen Erlass an die Statthalter seiner europäischen Provinzen. Darin stand, die spanischen Juden seien nicht etwa abzuweisen, sondern mit voller Aufrichtigkeit aufzunehmen. Und wer sich nicht daran halte, wer die Ankommenden schlecht behandle oder ihnen auch nur den kleinsten Schaden zufüge, werde mit dem Tod bestraft.</p>
+
+    <p>Angesiedelt wurden sie in <b>Istanbul, Selanik, Edirne, Bursa, Amasya und Manisa</b>. Sie kamen dort nicht in leere Städte: Seit byzantinischer Zeit lebten hier bereits die griechischsprachigen <b>Romanioten</b>, jüdische Gemeinden mit eigener, viel älterer Geschichte.</p>
+
+    <p>Auch die muslimischen Flüchtlinge aus Spanien wurden aufgenommen. In Istanbul wies man ihnen Galata zu, rund um die frühere Kirche Saint Dominicus, heute die <b>Arap Camii</b>, die Arabische Moschee. Sie bekamen ein Haus, Hausrat und Arbeit. Das Gebäude steht bis heute.</p>
+
+    <p>Was daraus wurde, lässt sich an drei Daten ablesen. <b>1493</b> richteten die Brüder David und Samuel Ibn Nahmias in Istanbul die erste Druckerei des Reiches ein. Bis <b>1519</b> hatte Selanik nach den osmanischen Steuerlisten eine jüdische Bevölkerungsmehrheit, man nannte die Stadt später das „Jerusalem des Balkans". Und aus dem Kastilisch der Vertriebenen wurde <b>Ladino</b>, das diese Gemeinden bis ins 20. Jahrhundert sprachen.</p>
+
+    <p>Damit schließt sich der Kreis. Menschen, die man aus Córdoba und Sevilla vertrieben hatte, weil sie nicht konvertieren wollten, lebten hundert Jahre später in Saloniki und Istanbul. Und mussten es dort weiterhin nicht.</p>
+
+    <div class="gloss" data-label="Kein reiner Gnadenakt">
+      <p>Die Aufnahme hatte auch handfeste Gründe. Das Reich brauchte Handwerker, Händler und Ärzte, und es bekam sie. Die Aufgenommenen lebten als Dhimmis mit Jizya-Pflicht, nicht als Gleiche. Und dieselbe Verwaltung kannte die <i>sürgün</i>, die Zwangsumsiedlung, denn nach 1453 hatte sie romaniotische Juden nach Istanbul verpflanzt. Beides gehört dazu.</p>
+    </div>
+
+    <div class="gloss" data-label="Das berühmte Zitat">
+      <p>Der Satz, Ferdinand mache sein eigenes Land arm und das osmanische reich, wird Bayezid gern zugeschrieben. Er steht aber in der Chronik des Elijah Capsali von 1523, und dort heißt es, der spanische König habe <b>am Istanbuler Hof</b> als Narr gegolten. Die Türkische Historische Gesellschaft weist selbst darauf hin, dass die Zuschreibung an Bayezid nicht stimmt. Der Erlass an die Statthalter ist ohnehin der bessere Beleg: Er ist Politik, nicht Rhetorik.</p>
+    </div>
+
+    <div class="gloss" data-label="Kam wirklich eine Flotte?">
+      <p>Oft heißt es, Bayezid habe eine Flotte zur Rettung geschickt. Die maßgebliche türkische Fachenzyklopädie ist vorsichtiger. Die Hilfe, um die Granada gebeten hatte, konnte man wegen der Schwäche der osmanischen Flotte nicht leisten. Ein Verband unter Kemal Reis griff aber die spanischen Küsten an und brachte einen Teil der andalusischen <b>Muslime</b> in Sicherheit. Kemal Reis wurde zudem erst 1495 Admiral.</p>
+      <p><b>Schiffe kamen also und holten Menschen heraus.</b> Ein geplanter Rettungseinsatz der Staatsflotte war es nicht, das ist eine spätere Erzählung.</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="era bib" id="quellen">
+  <div class="era-inner">
+    <h2>Quellen</h2>
+    <ul>
+      <li><b>Osmanisch und türkisch:</b> TDV İslâm Ansiklopedisi (<i>Bayezid II</i>, <i>Yahudilik</i>, <i>Selânik</i>, <i>Aljamia</i>); Türk Tarih Kurumu, <i>Belleten</i> 56/215 (1992) und 57/219 (1993); Halil İnalcık; Devlet Arşivleri Başkanlığı, <i>Cihan-Penâh</i> (2023); osmanische Tahrir-Register.</li>
+      <li><b>Zeitgenössisch:</b> Elijah Capsali, <i>Seder Eliyahu Zuta</i> (1523); Brief des Isaac Tsarfati (um 1454).</li>
+      <li><b>Forschung:</b> Heath W. Lowry in: Avigdor Levy (Hg.), <i>The Jews of the Ottoman Empire</i>; Braude/Lewis, <i>Christians and Jews in the Ottoman Empire</i>; Henry Kamen; Norman Roth; Joseph Pérez; Mark R. Cohen; L. P. Harvey, <i>Muslims in Spain 1500–1614</i>; Maribel Fierro.</li>
+      <li><b>Religiöse Normebene:</b> Yaqeen Institute, <i>„Be Brothers"</i>; SeekersGuidance.</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+.feedback{ max-width:920px; margin:0 auto; padding:60px 24px 20px; border-top:1px solid var(--line); }
+.feedback h2{ font-size:clamp(20px,2.6vw,26px); margin:0 0 10px; }
+.feedback .intro{ color:var(--parchment-2); font-size:15px; max-width:62ch; margin:0 0 26px; }
+.feedback .box{ background:var(--parchment); border-radius:3px; padding:22px 24px; box-shadow:0 10px 26px rgba(0,0,0,0.28); }
+.feedback label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--gold-dim); margin-bottom:6px; }
+.feedback select, .feedback textarea{
+  width:100%; font-family:'Source Serif 4',serif; font-size:15px; color:var(--parchment-text);
+  background:var(--field-bg); border:1px solid var(--field-border); border-radius:2px; padding:9px 11px; margin-bottom:6px; }
+.feedback textarea{ min-height:110px; resize:vertical; }
+.feedback select:focus, .feedback textarea:focus{ outline:2px solid var(--gold); outline-offset:-1px; }
+.feedback select{ margin-bottom:16px; }
+.feedback .counter{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; text-align:right; margin:0 0 16px; }
+.feedback button{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase;
+  background:var(--ink-3); color:var(--parchment); border:none; border-radius:2px; padding:11px 22px; cursor:pointer; }
+.feedback button:hover{ background:var(--ink); }
+.feedback .note-small{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c5033; margin:12px 0 0; }
+.feedback .note-small a{ color:var(--gold-dim); }
+</style>
+
+<section class="feedback" id="feedback">
+  <h2>Kontakt</h2>
+  <p class="intro">Diese Seite lebt von Genauigkeit. Wer einen Fehler findet, eine Quelle vermisst oder einen Vorschlag hat, darf ihn gerne hier hinterlassen.</p>
+
+  <div class="box">
+    <label for="fb-art">Art der Rückmeldung</label>
+    <select id="fb-art">
+      <option>Fehler gefunden</option>
+      <option>Quelle / Beleg ergänzen</option>
+      <option>Verbesserungsvorschlag</option>
+      <option>Sonstiges</option>
+    </select>
+
+    <label for="fb-msg">Kurze Nachricht</label>
+    <textarea id="fb-msg" maxlength="500" placeholder="Bitte möglichst konkret — bei Quellenhinweisen gerne mit Fundstelle."></textarea>
+    <p class="counter"><span id="fb-count">0</span> / 500</p>
+
+    <button type="button" id="fb-send">E-Mail verfassen</button>
+    <p class="note-small">Öffnet Ihr E-Mail-Programm mit vorausgefülltem Text. Falls das nicht funktioniert:
+      <a href="mailto:nachbar.aptitude308@passinbox.com?subject=R%C3%BCckmeldung%20zur%20Webseite">direkt schreiben</a>.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var MAIL = 'nachbar.aptitude308@passinbox.com';
+  var MAX  = 500;
+  var art  = document.getElementById('fb-art');
+  var msg  = document.getElementById('fb-msg');
+  var cnt  = document.getElementById('fb-count');
+  var btn  = document.getElementById('fb-send');
+
+  msg.addEventListener('input', function(){
+    if (msg.value.length > MAX) { msg.value = msg.value.slice(0, MAX); }
+    cnt.textContent = msg.value.length;
+  });
+
+  btn.addEventListener('click', function(){
+    var text = msg.value.trim();
+    if (!text) { msg.focus(); return; }
+    var subject = 'Rückmeldung zur Webseite — ' + art.value;
+    window.location.href = 'mailto:' + MAIL
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body='    + encodeURIComponent(text);
+  });
+})();
+</script>
+
+<footer>
+  <span class="footer-script" lang="ar" dir="rtl">وَقُل رَّبِّ زِدْنِي عِلْمًا</span>
+  <br><br>Arbeitsstand · in Bearbeitung · <a href="index.html">zurück zur Hauptseite</a>
+  <span class="mono">nachbars-glaube.de – ein kurzes Nachschlagewerk</span>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

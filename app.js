@@ -198,11 +198,13 @@
 
   /* ---------- Vorhandene Navigation auslesen ---------- */
   var langBlock = rail.querySelector('.langswitch');
-  var links = Array.prototype.slice.call(rail.querySelectorAll('a[href^="#"]'));
+  // Alle Links außer dem Sprachumschalter, also auch Verweise auf andere Seiten
+  var links = Array.prototype.slice.call(rail.querySelectorAll('a[href]'))
+    .filter(function (a) { return !a.closest('.langswitch'); });
   if (!links.length) return;
 
   // Ein Epochen-Link beginnt mit einer Jahreszahl, z. B. "622–632 · Der Prophet"
-  var ERA_RE = /^\s*(\d{3,4}\s*[–-]\s*\d{3,4})\s*[·|-]\s*(.+)$/;
+  var ERA_RE = /^\s*(\d{3,4}(?:\s*[–-]\s*\d{3,4})?)\s*[·|-]\s*(.+)$/;
 
   var groups = { base: [], chrono: [], appendix: [] };
   var seenEra = false;
@@ -297,7 +299,9 @@
   /* ---------- Aktiven Abschnitt beim Scrollen markieren ---------- */
   var navItems = Array.prototype.slice.call(nav.querySelectorAll('a.nav-item'));
   var targets = navItems.map(function (a) {
-    return { link: a, el: document.querySelector(a.getAttribute('href')) };
+    var h = a.getAttribute('href');
+    // Nur Anker markieren; Verweise auf andere Seiten haben kein Ziel im Dokument
+    return { link: a, el: h.charAt(0) === '#' ? document.querySelector(h) : null };
   }).filter(function (t) { return t.el; });
 
   navItems.forEach(function (a) {
