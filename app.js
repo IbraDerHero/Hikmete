@@ -106,50 +106,58 @@
     return btn;
   }
 
+  /* ---------- Hilfsfunktion: Knoten einklappen und Schalter anhängen ----------
+     host    Element, an das Schalter und Hülle gehängt werden
+     nodes   die einzuklappenden Knoten, in Reihenfolge
+     Gibt die Hülle zurück, damit Aufrufer sie weiterverwenden können. */
+  function collapse(host, nodes, labelOpen, labelClosed, prefix) {
+    var wrap = document.createElement('div');
+    wrap.className = 'tg-wrap';
+    wrap.id = 'tg-' + prefix + '-' + (++uid);
+
+    var inner = document.createElement('div');
+    inner.className = 'tg-inner';
+    nodes.forEach(function (n) { inner.appendChild(n); });
+    wrap.appendChild(inner);
+
+    host.appendChild(makeButton(labelOpen, labelClosed, wrap));
+    host.appendChild(wrap);
+    return wrap;
+  }
+
+  /* Beschriftung: data-label hat Vorrang, sonst das CSS-::before, sonst Vorgabe */
+  function labelOf(el, fallback) {
+    if (el.hasAttribute('data-label')) { return el.getAttribute('data-label'); }
+    try {
+      var c = window.getComputedStyle(el, '::before').content;
+      if (c && c !== 'none' && c !== 'normal') {
+        return c.replace(/^["']|["']$/g, '').trim() || fallback;
+      }
+    } catch (e) { /* Vorgabe bleibt */ }
+    return fallback;
+  }
+
   /* ---------- 1. Belegkarten: Tag + Titel bleiben sichtbar ---------- */
   document.querySelectorAll('.card').forEach(function (card) {
     // Alles ab dem ersten <p> einklappen; .tag und h3 bleiben stehen
     var nodes = Array.prototype.slice.call(card.children);
     var start = nodes.findIndex(function (n) { return n.tagName === 'P'; });
     if (start === -1) return; // nichts zum Klappen
-
-    var wrap = document.createElement('div');
-    wrap.className = 'tg-wrap';
-    wrap.id = 'tg-c-' + (++uid);
-
-    var inner = document.createElement('div');
-    inner.className = 'tg-inner';
-    nodes.slice(start).forEach(function (n) { inner.appendChild(n); });
-    wrap.appendChild(inner);
-
-    card.appendChild(makeButton(T.hide, T.show, wrap));
-    card.appendChild(wrap);
+    collapse(card, nodes.slice(start), T.hide, T.show, 'c');
   });
 
   /* ---------- 2. Randglossen: komplett zu, Label als Schalter ---------- */
   document.querySelectorAll('.gloss').forEach(function (gloss) {
-    // Label aus dem vorhandenen ::before lesen — funktioniert DE wie SQ
-    var label = gloss.getAttribute('data-label') || T.gloss;
-    try {
-      if (gloss.hasAttribute('data-label')) { throw 0; }
-      var c = window.getComputedStyle(gloss, '::before').content;
-      if (c && c !== 'none' && c !== 'normal') {
-        label = c.replace(/^["']|["']$/g, '').trim() || label;
-      }
-    } catch (e) { /* Fallback bleibt */ }
-
-    var wrap = document.createElement('div');
-    wrap.className = 'tg-wrap';
-    wrap.id = 'tg-g-' + (++uid);
-
-    var inner = document.createElement('div');
-    inner.className = 'tg-inner';
-    while (gloss.firstChild) { inner.appendChild(gloss.firstChild); }
-    wrap.appendChild(inner);
-
+    var label = labelOf(gloss, T.gloss);
     gloss.classList.add('tg');
-    gloss.appendChild(makeButton(label, label, wrap));
-    gloss.appendChild(wrap);
+    collapse(gloss, Array.prototype.slice.call(gloss.childNodes), label, label, 'g');
+  });
+
+  /* ---------- 2b. Beliebiger Block: <div data-collapse data-label="..."> ---------- */
+  document.querySelectorAll('[data-collapse]').forEach(function (box) {
+    var label = labelOf(box, T.show);
+    box.classList.add('tg-box');
+    collapse(box, Array.prototype.slice.call(box.childNodes), label, label, 'b');
   });
 
   /* ---------- 3. Sammel-Schalter über jeder Kartengruppe ---------- */
@@ -173,6 +181,34 @@
 
     group.parentNode.insertBefore(bulk, group);
   });
+
+  /* ---------- 4. Sprunglink: Zielbereich aufklappen ----------
+     Wer über die Navigation auf einen Anker springt, soll den Inhalt
+     sehen und nicht auf einer zugeklappten Überschrift landen. */
+  function openFor(target) {
+    if (!target) return;
+    // a) Ziel liegt selbst in einer Hülle: alle übergeordneten öffnen
+    var w = target.closest ? target.closest('.tg-wrap') : null;
+    while (w) {
+      var b = document.querySelector('[aria-controls="' + w.id + '"]');
+      if (b && b.getAttribute('aria-expanded') === 'false') { b.click(); }
+      w = w.parentNode && w.parentNode.closest ? w.parentNode.closest('.tg-wrap') : null;
+    }
+    // b) Ziel enthält einen klappbaren Block: den ersten öffnen
+    var inner = target.querySelector && target.querySelector('.tg-box > .tg-btn');
+    if (inner && inner.getAttribute('aria-expanded') === 'false') { inner.click(); }
+  }
+
+  function openForHash() {
+    var h = window.location.hash;
+    if (!h || h.length < 2) return;
+    var el = null;
+    try { el = document.querySelector(h); } catch (e) { return; }
+    openFor(el);
+  }
+
+  openForHash();
+  window.addEventListener('hashchange', openForHash);
 
 })();
 
@@ -380,5 +416,83 @@
 
   var host = document.querySelector('.sidenav-lang') || document.querySelector('.sidenav');
   if (host) { host.appendChild(btn); }
+
+})();
+
+
+/* ============================================================
+   Teil 4 — Karteikarten-Umschalter
+
+   Markup:
+     <div class="switcher">
+       <article data-tab="Kurztitel"> … Inhalt … </article>
+       <article data-tab="Kurztitel"> … Inhalt … </article>
+     </div>
+
+   Baut daraus eine Reiterleiste und zeigt jeweils ein Feld.
+   Ohne JavaScript bleiben alle Felder untereinander lesbar.
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  var IS_SQ = (document.documentElement.lang || 'de').toLowerCase().indexOf('sq') === 0;
+  var L = IS_SQ ? { list: 'Zgjidh temën' } : { list: 'Thema wählen' };
+
+  var gid = 0;
+
+  document.querySelectorAll('.switcher').forEach(function (box) {
+    var panels = Array.prototype.slice.call(box.children)
+      .filter(function (el) { return el.hasAttribute('data-tab'); });
+    if (panels.length < 2) return; // bei einem Feld lohnt kein Umschalter
+
+    var id = 'sw' + (++gid);
+    var tabs = document.createElement('div');
+    tabs.className = 'sw-tabs';
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', L.list);
+
+    var buttons = [];
+
+    function select(n) {
+      panels.forEach(function (p, i) {
+        var on = (i === n);
+        p.hidden = !on;
+        buttons[i].setAttribute('aria-selected', on ? 'true' : 'false');
+        buttons[i].tabIndex = on ? 0 : -1;
+      });
+    }
+
+    panels.forEach(function (panel, i) {
+      panel.id = id + '-p' + i;
+      panel.classList.add('sw-panel');
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', id + '-t' + i);
+
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sw-tab';
+      b.id = id + '-t' + i;
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-controls', panel.id);
+      b.textContent = panel.getAttribute('data-tab');
+
+      b.addEventListener('click', function () { select(i); });
+      b.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        e.preventDefault();
+        var n = (i + step + panels.length) % panels.length;
+        select(n);
+        buttons[n].focus();
+      });
+
+      buttons.push(b);
+      tabs.appendChild(b);
+    });
+
+    box.insertBefore(tabs, box.firstChild);
+    select(0);
+  });
 
 })();
