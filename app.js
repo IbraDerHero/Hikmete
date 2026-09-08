@@ -496,3 +496,194 @@
   });
 
 })();
+
+
+/* ============================================================
+   Teil 5 — Schreibmaschine
+
+   typewrite(root) blendet den Text innerhalb von root wortweise ein,
+   ohne das Markup anzutasten: Es werden die Textknoten geleert und
+   anschließend wieder gefüllt. Fett, Kursiv und Links bleiben dabei
+   erhalten, weil die Elemente selbst nie verändert werden.
+
+   Rückgabe: { finish() } — springt sofort ans Ende.
+   ============================================================ */
+
+function typewrite(root, opts) {
+  'use strict';
+
+  opts = opts || {};
+  var perTick = opts.perTick || 2;   // Wörter je Bildschirmaktualisierung
+  var onDone  = opts.onDone  || null;
+
+  /* Alle Textknoten einsammeln, leere überspringen */
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  var items = [];
+  var node;
+  while ((node = walker.nextNode())) {
+    if (!node.nodeValue.trim()) { continue; }
+    items.push({ node: node, full: node.nodeValue, words: node.nodeValue.split(/(\s+)/) });
+  }
+  if (!items.length) { if (onDone) { onDone(); } return { finish: function () {} }; }
+
+  var done = false;
+
+  function finish() {
+    if (done) { return; }
+    done = true;
+    items.forEach(function (it) { it.node.nodeValue = it.full; });
+    if (onDone) { onDone(); }
+  }
+
+  /* Wer Bewegung abgeschaltet hat, bekommt den Text sofort */
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still) { finish(); return { finish: finish }; }
+
+  items.forEach(function (it) { it.node.nodeValue = ''; });
+
+  var i = 0;   // aktueller Textknoten
+  var w = 0;   // aktuelles Wort darin
+
+  function step() {
+    if (done) { return; }
+    var budget = perTick;
+    while (budget > 0 && i < items.length) {
+      var it = items[i];
+      if (w >= it.words.length) { i++; w = 0; continue; }
+      it.node.nodeValue += it.words[w];
+      // Trennzeichen kosten keinen Takt, sonst stockt es sichtbar
+      if (it.words[w].trim()) { budget--; }
+      w++;
+    }
+    if (i >= items.length) { finish(); return; }
+    window.requestAnimationFrame(step);
+  }
+
+  window.requestAnimationFrame(step);
+  return { finish: finish };
+}
+
+
+/* ============================================================
+   Teil 6 — Auswahl mit Einblendung
+
+   Markup:
+     <div class="chooser">
+       <article data-choice="Die Behauptung im Wortlaut">
+         … Beleglage, beliebiges HTML …
+       </article>
+       …
+     </div>
+
+   Baut aus den data-choice-Werten anklickbare Karten. Erst nach der
+   Auswahl erscheint die zugehörige Beleglage, wortweise eingeblendet.
+   Ohne JavaScript bleibt alles untereinander lesbar.
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  var IS_SQ = (document.documentElement.lang || 'de').toLowerCase().indexOf('sq') === 0;
+  var L = IS_SQ
+    ? { list: 'Zgjidh një pohim', hint: 'Zgjidh një pohim për të parë dëshmitë.', skip: 'Kliko për ta parë të plotë' }
+    : { list: 'Behauptung wählen', hint: 'Eine Behauptung wählen, um die Beleglage zu sehen.', skip: 'Klicken zeigt alles sofort' };
+
+  var gid = 0;
+
+  document.querySelectorAll('.chooser').forEach(function (box) {
+    var panels = Array.prototype.slice.call(box.children)
+      .filter(function (el) { return el.hasAttribute('data-choice'); });
+    if (!panels.length) { return; }
+
+    var id = 'ch' + (++gid);
+    var running = null;   // laufende Schreibmaschine, damit sie abbrechbar bleibt
+
+    /* ---------- Auswahlkarten ---------- */
+    var list = document.createElement('div');
+    list.className = 'ch-list';
+    list.setAttribute('role', 'tablist');
+    list.setAttribute('aria-label', L.list);
+
+    /* ---------- Hinweiszeile vor der ersten Auswahl ---------- */
+    var hint = document.createElement('p');
+    hint.className = 'ch-hint';
+    hint.textContent = L.hint;
+
+    var buttons = [];
+
+    function select(n) {
+      if (running) { running.finish(); running = null; }
+      hint.hidden = true;
+
+      panels.forEach(function (p, i) {
+        var on = (i === n);
+        p.hidden = !on;
+        buttons[i].setAttribute('aria-selected', on ? 'true' : 'false');
+        buttons[i].tabIndex = on ? 0 : -1;
+      });
+
+      var panel = panels[n];
+      panel.classList.add('ch-typing');
+      running = typewrite(panel, {
+        onDone: function () { panel.classList.remove('ch-typing'); running = null; }
+      });
+    }
+
+    panels.forEach(function (panel, i) {
+      panel.id = id + '-p' + i;
+      panel.hidden = true;
+      panel.classList.add('ch-panel');
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', id + '-c' + i);
+      // Vorlesehilfen sollen nicht jedes einzelne Wort ansagen
+      panel.setAttribute('aria-live', 'off');
+
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ch-card';
+      b.id = id + '-c' + i;
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('aria-controls', panel.id);
+      b.tabIndex = i === 0 ? 0 : -1;
+
+      var num = document.createElement('span');
+      num.className = 'ch-num';
+      num.textContent = String(i + 1);
+
+      var txt = document.createElement('span');
+      txt.className = 'ch-txt';
+      // Bereits vorhandene Anführungszeichen abstreifen, damit sie sich nicht verdoppeln
+      var quote = panel.getAttribute('data-choice').replace(/\s+/g, ' ').trim()
+        .replace(/^["\u201E\u201C\u00AB]+/, '')
+        .replace(/["\u201C\u201D\u00BB]+$/, '');
+      txt.textContent = '\u201E' + quote + '\u201C';
+
+      b.appendChild(num);
+      b.appendChild(txt);
+
+      b.addEventListener('click', function () { select(i); });
+      b.addEventListener('keydown', function (e) {
+        var step = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1
+                 : e.key === 'ArrowUp'   || e.key === 'ArrowLeft'  ? -1 : 0;
+        if (!step) { return; }
+        e.preventDefault();
+        var n = (i + step + panels.length) % panels.length;
+        buttons[n].focus();
+        select(n);
+      });
+
+      buttons.push(b);
+      list.appendChild(b);
+    });
+
+    /* Klick in den Textbereich beendet die Animation sofort */
+    box.addEventListener('click', function (e) {
+      if (running && !e.target.closest('.ch-card')) { running.finish(); running = null; }
+    });
+
+    box.insertBefore(hint, box.firstChild);
+    box.insertBefore(list, box.firstChild);
+  });
+
+})();

@@ -770,3 +770,96 @@ h1, h2, h3, .display,
   .sw-panel[hidden]{ display: block !important; }
   .sw-panel{ animation: none; }
 }
+
+/* ============================================================
+   Auswahl mit Einblendung (app.js Teil 6)
+   ============================================================ */
+.ch-list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+.ch-card{
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--parchment-2);
+  background: none;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: 2px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: color .16s ease, border-color .16s ease, background-color .16s ease;
+}
+.ch-card:hover{
+  color: var(--heading);
+  border-color: var(--gold-dim);
+  border-left-color: var(--gold);
+  background: rgba(136,163,232,0.05);
+}
+.ch-card:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+.ch-card[aria-selected="true"]{
+  color: var(--heading);
+  border-color: var(--gold-dim);
+  border-left-color: var(--gold);
+  background: var(--accent-soft);
+}
+.ch-num{
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--gold-dim);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  width: 22px;
+  text-align: center;
+}
+.ch-card[aria-selected="true"] .ch-num,
+.ch-card:hover .ch-num{ color: var(--gold); border-color: var(--gold-dim); }
+.ch-txt{ font-style: italic; }
+
+.ch-hint{
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin: 0 0 4px;
+}
+
+.ch-panel{ animation: ch-in .2s ease both; }
+@keyframes ch-in{
+  from{ opacity: 0; transform: translateY(5px); }
+  to  { opacity: 1; transform: none; }
+}
+/* Cursor, solange geschrieben wird */
+.ch-panel.ch-typing::after{
+  content: '';
+  display: inline-block;
+  width: 7px; height: 15px;
+  margin-left: 2px;
+  background: var(--gold);
+  animation: ch-blink .9s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+@keyframes ch-blink{ 0%,50%{ opacity: 1; } 51%,100%{ opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce){
+  .ch-panel{ animation: none; }
+  .ch-panel.ch-typing::after{ display: none; }
+}
+/* Beim Drucken alle Felder ausgeben */
+@media print{
+  .ch-list, .ch-hint{ display: none; }
+  .ch-panel[hidden]{ display: block !important; }
+  .ch-panel{ animation: none; }
+  .ch-panel.ch-typing::after{ display: none; }
+}
