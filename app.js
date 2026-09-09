@@ -513,7 +513,7 @@ function typewrite(root, opts) {
   'use strict';
 
   opts = opts || {};
-  var perTick = opts.perTick || 2;   // Wörter je Bildschirmaktualisierung
+  var perTick = opts.perTick || 1;   // Wörter je Bildschirmaktualisierung
   var onDone  = opts.onDone  || null;
 
   /* Alle Textknoten einsammeln, leere überspringen */
