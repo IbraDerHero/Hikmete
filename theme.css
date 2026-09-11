@@ -490,7 +490,7 @@ h1, h2, h3, .display,
   --parchment-text: #2B2114;   /* Text auf Karten   */
   --heading:        #2B2114;
 
-  --gold:     #7A5E1F;         /* Akzent & Links    */
+  --gold:     #6E5419;         /* Akzent & Links    */
   --gold-dim: #8C7330;
   --lapis:      #3E6479;       /* Kategorie A       */
   --vermillion: #9C4740;       /* Kategorie B       */
@@ -862,4 +862,99 @@ h1, h2, h3, .display,
   .ch-panel[hidden]{ display: block !important; }
   .ch-panel{ animation: none; }
   .ch-panel.ch-typing::after{ display: none; }
+}
+
+/* ============================================================
+   Seitenhintergrund
+   Drei Varianten. Aktiv ist Variante 1.
+   Zum Wechseln: gewünschten Block einkommentieren, anderen auskommentieren.
+   Kein Bild, keine Datei — alles per CSS.
+   ============================================================ */
+
+html{ background: var(--ink); }
+
+body::before{
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---- Variante 1: Tiefe durch Lichtschein, plus feines Sternmuster ---- */
+body::before{
+  background-color: var(--ink);
+  background-image:
+    /* Lichtschein oben mittig */
+    radial-gradient(120% 80% at 50% -10%,
+      rgba(136,163,232,0.10) 0%,
+      rgba(136,163,232,0.04) 35%,
+      transparent 70%),
+    /* Abdunklung an den Rändern */
+    radial-gradient(120% 100% at 50% 50%,
+      transparent 40%,
+      rgba(0,0,0,0.35) 100%),
+    /* Achtecksterne, sehr zurückhaltend */
+    var(--bg-girih);
+  background-size: 100% 100%, 100% 100%, 72px 72px;
+  background-position: center top, center, center;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+
+:root{
+  /* Achteckstern aus zwei gedrehten Quadraten, wie im Trenner und im Favicon */
+  --bg-girih: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23f8f9fa' stroke-opacity='0.045' stroke-width='1'%3E%3Crect x='22' y='22' width='28' height='28'/%3E%3Crect x='22' y='22' width='28' height='28' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+
+  /* Rautennetz nach Art der Sebka, für Variante 2 */
+  --bg-sebka: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='56' viewBox='0 0 48 56'%3E%3Cg fill='none' stroke='%23f8f9fa' stroke-opacity='0.05' stroke-width='1'%3E%3Cpath d='M24 0 L48 14 L48 42 L24 56 L0 42 L0 14 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+[data-theme="light"]{
+  --bg-girih: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%232B2114' stroke-opacity='0.07' stroke-width='1'%3E%3Crect x='22' y='22' width='28' height='28'/%3E%3Crect x='22' y='22' width='28' height='28' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+  --bg-sebka: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='56' viewBox='0 0 48 56'%3E%3Cg fill='none' stroke='%232B2114' stroke-opacity='0.08' stroke-width='1'%3E%3Cpath d='M24 0 L48 14 L48 42 L24 56 L0 42 L0 14 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+[data-theme="light"] body::before{
+  background-image:
+    radial-gradient(120% 80% at 50% -10%,
+      rgba(122,94,31,0.10) 0%,
+      rgba(122,94,31,0.04) 35%,
+      transparent 70%),
+    radial-gradient(120% 100% at 50% 50%,
+      transparent 45%,
+      rgba(43,33,20,0.10) 100%),
+    var(--bg-girih);
+}
+
+/* Inhalte müssen über der Hintergrundebene liegen */
+.sidenav, .nav-toggle, .nav-backdrop{ z-index: 60; }
+
+/* ---- Variante 2: Rautennetz (Sebka), flächiger ----
+body::before{
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(100% 70% at 50% 0%,
+      rgba(136,163,232,0.09) 0%, transparent 65%),
+    var(--bg-sebka);
+  background-size: 100% 100%, 48px 56px;
+  background-position: center top, center;
+  background-repeat: no-repeat, repeat;
+}
+*/
+
+/* ---- Variante 3: nur Tiefe, ohne Muster ----
+body::before{
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(130% 90% at 50% -15%,
+      rgba(136,163,232,0.12) 0%,
+      rgba(136,163,232,0.05) 40%,
+      transparent 75%),
+    radial-gradient(120% 100% at 50% 60%,
+      transparent 35%, rgba(0,0,0,0.40) 100%);
+  background-repeat: no-repeat, no-repeat;
+}
+*/
+
+@media print{
+  body::before{ display: none; }
 }
