@@ -513,7 +513,7 @@ function typewrite(root, opts) {
   'use strict';
 
   opts = opts || {};
-  var perTick = opts.perTick || 1;   // Wörter je Bildschirmaktualisierung
+  var perTick = opts.perTick || 2;   // Wörter je Bildschirmaktualisierung
   var onDone  = opts.onDone  || null;
 
   /* Alle Textknoten einsammeln, leere überspringen */
@@ -685,5 +685,65 @@ function typewrite(root, opts) {
     box.insertBefore(hint, box.firstChild);
     box.insertBefore(list, box.firstChild);
   });
+
+})();
+
+
+/* ============================================================
+   Teil 7 — Begrüßungshinweis
+
+   Markup (einmal je Seite, direkt nach <body>):
+     <dialog class="hello" data-hello="1">
+       <h2>…</h2>
+       <p>…</p>
+       <button type="button" data-hello-close>Verstanden</button>
+     </dialog>
+
+   Erscheint einmal je Besucher. Die Zahl in data-hello ist die
+   Version: Wird sie erhöht, sehen auch frühere Besucher den
+   Hinweis erneut. Ohne JavaScript bleibt der Dialog verborgen.
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  var dlg = document.querySelector('dialog.hello');
+  if (!dlg || typeof dlg.showModal !== 'function') { return; }
+
+  var version = dlg.getAttribute('data-hello') || '1';
+  var KEY = 'hello-seen';
+
+  function seen() {
+    try { return localStorage.getItem(KEY) === version; } catch (e) { return false; }
+  }
+  function remember() {
+    try { localStorage.setItem(KEY, version); } catch (e) { /* Privatmodus */ }
+  }
+
+  function close() {
+    remember();
+    if (dlg.open) { dlg.close(); }
+  }
+
+  /* Schaltflächen im Dialog */
+  dlg.querySelectorAll('[data-hello-close]').forEach(function (b) {
+    b.addEventListener('click', close);
+  });
+
+  /* Klick auf die Fläche außerhalb des Inhalts schließt ebenfalls */
+  dlg.addEventListener('click', function (e) {
+    if (e.target === dlg) { close(); }
+  });
+
+  /* Escape löst 'cancel' aus; auch dann merken */
+  dlg.addEventListener('cancel', function () { remember(); });
+  dlg.addEventListener('close', function () { remember(); });
+
+  if (!seen()) {
+    // Kurz warten, damit die Seite erst steht
+    window.setTimeout(function () {
+      if (!dlg.open) { dlg.showModal(); }
+    }, 350);
+  }
 
 })();
